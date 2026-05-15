@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp">
+
+    <!-- Icon card -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardTransactionIcon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="#F0F4F8">
+
+        <TextView
+            android:id="@+id/tvTransactionIcon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="💰"
+            android:textSize="22sp"
+            android:gravity="center" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Text info -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="16dp">
+
+        <TextView
+            android:id="@+id/tvTransactionCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Danh mục"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvTransactionNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ghi chú..."
+            android:textColor="@color/text_secondary"
+            android:textSize="13sp"
+            android:layout_marginTop="4dp"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+    </LinearLayout>
+
+    <!-- Amount + Date -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="end">
+
+        <TextView
+            android:id="@+id/tvTransactionAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-0 ₫"
+            android:textColor="@color/expense_red"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvTransactionDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2025-01-01"
+            android:textColor="@color/text_hint"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

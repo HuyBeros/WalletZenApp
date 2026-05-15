@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.BTL_ANDROID_TANGHUUHUY" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent_blue</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:statusBarColor">@color/status_bar</item>
+        <item name="android:navigationBarColor">@color/surface</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
+
+    <!-- Splash Theme - No ActionBar, fullscreen gradient -->
+    <style name="Theme.WalletZen.Splash" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowBackground">@color/primary</item>
+        <item name="android:statusBarColor">@color/primary_dark</item>
+    </style>
+
+    <!-- Button Styles -->
+    <style name="WalletZen.Button.Primary" parent="Widget.MaterialComponents.Button">
+        <item name="android:background">@drawable/bg_button_primary</item>
+        <item name="android:textColor">@color/text_white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:padding">14dp</item>
+        <item name="cornerRadius">28dp</item>
+        <item name="elevation">4dp</item>
+    </style>
+
+    <style name="WalletZen.Button.Outline" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textSize">14sp</item>
+        <item name="strokeColor">@color/primary</item>
+        <item name="cornerRadius">28dp</item>
+    </style>
+
+    <!-- Card Style -->
+    <style name="WalletZen.Card" parent="Widget.MaterialComponents.CardView">
+        <item name="cardElevation">6dp</item>
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardBackgroundColor">@color/card_bg</item>
+    </style>
+
+    <!-- TextInput Style — Rounded 14dp với primary color -->
+    <style name="WalletZen.TextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/primary</item>
+        <item name="boxStrokeWidth">1.5dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+        <item name="hintTextColor">@color/primary</item>
+        <item name="boxCornerRadiusTopStart">14dp</item>
+        <item name="boxCornerRadiusTopEnd">14dp</item>
+        <item name="boxCornerRadiusBottomStart">14dp</item>
+        <item name="boxCornerRadiusBottomEnd">14dp</item>
+        <item name="startIconTint">@color/primary</item>
+    </style>
+
+    <!-- Bottom Navigation -->
+    <style name="WalletZen.BottomNav" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">@color/surface</item>
+        <item name="itemIconTint">@color/bottom_nav_selector</item>
+        <item name="itemTextColor">@color/bottom_nav_selector</item>
+        <item name="elevation">12dp</item>
+    </style>
+</resources>

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- NỬA TRÊN: NỀN XANH LIỀN MẠCH -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_gradient_header"
+            android:orientation="vertical"
+            android:paddingBottom="48dp"
+            android:elevation="0dp">
+
+            <!-- Toolbar area -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="16dp"
+                android:paddingTop="40dp">
+
+                <ImageView
+                    android:id="@+id/btnBack"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@android:drawable/ic_menu_close_clear_cancel"
+                    app:tint="#FFFFFF"
+                    android:padding="8dp"
+                    android:background="?attr/selectableItemBackgroundBorderless" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Thêm giao dịch"
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginEnd="40dp" />
+            </LinearLayout>
+
+            <!-- AMOUNT INPUT -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SỐ TIỀN"
+                    android:textColor="#E6FFFFFF"
+                    android:textSize="12sp"
+                    android:letterSpacing="0.1"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="₫ "
+                        android:textColor="#FFFFFF"
+                        android:textSize="40sp"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtAmount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="80dp"
+                        android:inputType="numberDecimal"
+                        android:hint="0"
+                        android:textColorHint="#99FFFFFF"
+                        android:textSize="56sp"
+                        android:textStyle="bold"
+                        android:textColor="#FFFFFF"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:maxLength="10" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- CHIPS -->
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroupType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                app:singleSelection="true"
+                app:selectionRequired="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipExpense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chi tiêu"
+                    android:textSize="15sp"
+                    app:chipBackgroundColor="#33FFFFFF"
+                    app:chipStrokeWidth="0dp"
+                    android:textColor="#FFFFFF"
+                    android:checked="true"
+                    app:chipIcon="@android:drawable/arrow_down_float"
+                    app:chipIconTint="#FFFFFF"
+                    app:chipCornerRadius="20dp" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipIncome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thu nhập"
+                    android:textSize="15sp"
+                    app:chipBackgroundColor="#33FFFFFF"
+                    app:chipStrokeWidth="0dp"
+                    android:textColor="#FFFFFF"
+                    app:chipIcon="@android:drawable/arrow_up_float"
+                    app:chipIconTint="#FFFFFF"
+                    app:chipCornerRadius="20dp" />
+            </com.google.android.material.chip.ChipGroup>
+        </LinearLayout>
+
+        <!-- NỬA DƯỚI: FORM TRẮNG NỔI (Nằm đè lên nền xanh) -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="-24dp"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="8dp"
+            app:strokeWidth="0dp"
+            app:cardBackgroundColor="#FFFFFF">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    app:boxStrokeColor="@color/primary"
+                    app:hintTextColor="@color/primary">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/spinnerCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:padding="16dp"
+                        android:hint="Danh mục giao dịch" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    app:startIconDrawable="@android:drawable/ic_menu_today"
+                    app:startIconTint="@color/primary"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    app:boxStrokeColor="@color/primary"
+                    app:hintTextColor="@color/primary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Ngày giao dịch"
+                        android:padding="16dp"
+                        android:focusable="false"
+                        android:clickable="true" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    app:startIconDrawable="@android:drawable/ic_menu_edit"
+                    app:startIconTint="@color/primary"
+                    app:boxCornerRadiusTopStart="16dp"
+                    app:boxCornerRadiusTopEnd="16dp"
+                    app:boxCornerRadiusBottomStart="16dp"
+                    app:boxCornerRadiusBottomEnd="16dp"
+                    app:boxStrokeColor="@color/primary"
+                    app:hintTextColor="@color/primary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edtNote"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Thêm ghi chú..."
+                        android:padding="16dp"
+                        android:inputType="textMultiLine"
+                        android:minLines="2" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:indeterminateTint="@color/primary" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/bg_button_primary"
+            android:text="LƯU GIAO DỊCH"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            app:cornerRadius="16dp"
+            app:elevation="4dp"
+            app:icon="@android:drawable/ic_menu_save"
+            app:iconGravity="textStart"
+            app:iconTint="#FFFFFF" />
+
+    </LinearLayout>
+</ScrollView>
