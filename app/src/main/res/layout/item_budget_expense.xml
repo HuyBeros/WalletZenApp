@@ -3,44 +3,44 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="8dp"
-    android:layout_marginVertical="4dp"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginVertical="6dp"
     app:cardCornerRadius="16dp"
-    app:cardElevation="0dp"
-    app:strokeColor="@color/expense_red"
-    app:strokeWidth="1.5dp"
-    app:cardBackgroundColor="@android:color/transparent">
+    app:cardElevation="1dp"
+    app:strokeColor="#E2E8F0"
+    app:strokeWidth="1dp"
+    app:cardBackgroundColor="#FFFFFF">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="12dp"
-        android:background="?attr/selectableItemBackground">
+        android:padding="16dp">
 
-        <!-- Top Row: Icon, Name, Status badge, Menu -->
+        <!-- Top Row: Icon, Name + Limit, Edit + Delete Buttons -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-            <!-- Category Icon -->
+            <!-- Category Icon Container -->
             <LinearLayout
-                android:layout_width="44dp"
-                android:layout_height="44dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="@drawable/bg_icon_circle"
-                android:backgroundTint="#E0E7FF"
+                android:backgroundTint="#F1F5F9"
                 android:gravity="center">
 
                 <ImageView
                     android:id="@+id/ivIconBudget"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:src="@drawable/ic_food"
                     app:tint="@color/primary" />
             </LinearLayout>
 
+            <!-- Category Name and Limit -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -52,103 +52,78 @@
                     android:id="@+id/tvCategoryName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ăn uống"
-                    android:textColor="@color/text_primary"
+                    android:text="Ăn uống &amp; Nhà hàng"
+                    android:textColor="#1E293B"
                     android:textStyle="bold"
                     android:fontFamily="sans-serif-medium"
-                    android:textSize="16sp" />
+                    android:textSize="15sp" />
 
                 <TextView
-                    android:id="@+id/tvRemainingAmount"
+                    android:id="@+id/tvLimitAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Còn lại 1.800.000đ"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="12sp"
+                    android:text="Giới hạn: 6.000.000đ"
+                    android:textColor="#64748B"
+                    android:textSize="13sp"
                     android:layout_marginTop="2dp" />
             </LinearLayout>
 
-            <!-- Badge Status & Dropdown -->
+            <!-- Edit and Delete Actions -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="end">
-
-                <TextView
-                    android:id="@+id/tvStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_badge"
-                    android:backgroundTint="#DCFCE7"
-                    android:textColor="#166534"
-                    android:text="AN TOÀN"
-                    android:textSize="10sp"
-                    android:paddingHorizontal="6dp"
-                    android:paddingVertical="2dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:textStyle="bold" />
+                android:orientation="horizontal"
+                android:gravity="center">
 
                 <ImageView
-                    android:id="@+id/btnOptions"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_marginTop="4dp"
+                    android:id="@+id/btnEditBudget"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/edit"
+                    android:padding="8dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/down"
-                    app:tint="@color/text_secondary" />
+                    app:tint="#64748B" />
+
+                <ImageView
+                    android:id="@+id/btnDeleteBudget"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/delete"
+                    android:padding="8dp"
+                    android:layout_marginStart="4dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:tint="#EF4444" />
             </LinearLayout>
         </LinearLayout>
 
-        <!-- Amount row -->
-        <LinearLayout
+        <!-- Amount row: Spent and Remaining -->
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom"
-            android:layout_marginTop="12dp">
+            android:layout_marginTop="16dp">
 
             <TextView
                 android:id="@+id/tvSpentAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="4.200.000đ"
-                android:textColor="@color/primary"
+                android:textColor="#1E293B"
                 android:textStyle="bold"
                 android:fontFamily="sans-serif-medium"
-                android:textSize="16sp" />
+                android:textSize="14sp"
+                android:layout_alignParentStart="true" />
 
             <TextView
-                android:id="@+id/tvSlash"
+                android:id="@+id/tvRemainingAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" / "
-                android:textColor="@color/text_secondary"
-                android:textSize="13sp"
-                android:layout_marginStart="2dp"
-                android:layout_marginBottom="1dp" />
-
-            <TextView
-                android:id="@+id/tvLimitAmount"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="6tr"
-                android:textColor="@color/text_secondary"
+                android:text="Còn lại 1.800.000đ"
+                android:textColor="#059669"
                 android:fontFamily="sans-serif-medium"
-                android:textSize="13sp"
-                android:layout_marginBottom="1dp" />
-
-            <TextView
-                android:id="@+id/tvPercent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="70%"
-                android:textColor="@color/text_secondary"
-                android:fontFamily="sans-serif-medium"
+                android:textStyle="bold"
                 android:textSize="12sp"
-                android:layout_marginBottom="1dp" />
-        </LinearLayout>
+                android:layout_alignParentEnd="true" />
+        </RelativeLayout>
 
         <!-- Progress Bar -->
         <ProgressBar

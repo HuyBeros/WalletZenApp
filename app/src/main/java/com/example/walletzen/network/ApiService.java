@@ -88,6 +88,9 @@ public interface ApiService {
     @GET("api/categories")
     Call<List<Category>> getCategoriesByType(@Query("type") String type);
 
+    @POST("api/categories")
+    Call<Category> createCategory(@Body Category category);
+
     // ============ DASHBOARD ============
 
     // GET /api/dashboard/balance?userId=1
@@ -116,4 +119,10 @@ public interface ApiService {
     // ============ BUDGETS ============
     @GET("api/budgets")
     Call<List<Budget>> getBudgets(@Query("userId") Long userId);
+
+    @POST("api/budgets/set-limit")
+    Call<Budget> setBudgetLimit(@Body Budget budget);
+
+    @DELETE("api/budgets/{id}")
+    Call<Void> deleteBudget(@Path("id") Long id);
 }

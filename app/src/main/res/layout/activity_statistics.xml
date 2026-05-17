@@ -232,37 +232,11 @@
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:layout_height="wrap_content"
-                            android:text="Lịch giao\ndịch"
+                            android:text="Lịch giao dịch"
                             android:textColor="@color/text_primary"
                             android:textSize="18sp"
                             android:fontFamily="sans-serif-medium"
                             android:textStyle="bold" />
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/calender"
-                            app:tint="@color/text_secondary"
-                            android:padding="2dp"
-                            android:background="@drawable/bg_input" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Tháng 10,\n2023"
-                            android:gravity="center"
-                            android:textSize="12sp"
-                            android:textColor="@color/text_primary"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="8dp"/>
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_chevron_right"
-                            app:tint="@color/text_secondary"
-                            android:padding="2dp"
-                            android:background="@drawable/bg_input" />
                     </LinearLayout>
 
                     <!-- Placeholder Calendar (Simplified for UI representation) -->

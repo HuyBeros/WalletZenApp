@@ -39,10 +39,22 @@ public class BudgetActivity extends AppCompatActivity {
         setupBottomNav();
         setupViewPager();
 
-        // Hide FAB — no budget creation API available
-        fabAddBudget.setVisibility(com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton.GONE);
+        // Show FAB to add new budgets
+        fabAddBudget.setVisibility(com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton.VISIBLE);
+        fabAddBudget.setOnClickListener(v -> {
+            Intent intent = new Intent(BudgetActivity.this, AddBudgetActivity.class);
+            startActivityForResult(intent, 100);
+        });
 
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            setupViewPager();
+        }
     }
 
     private void setupViewPager() {

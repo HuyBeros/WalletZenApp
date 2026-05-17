@@ -22,12 +22,19 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private static final int TYPE_EXPENSE = 0;
     private static final int TYPE_INCOME = 1;
 
+    public interface OnBudgetClickListener {
+        void onEditClick(BudgetItem item);
+        void onDeleteClick(BudgetItem item);
+    }
+
     private Context context;
     private List<BudgetItem> list;
+    private OnBudgetClickListener listener;
 
-    public BudgetAdapter(Context context, List<BudgetItem> list) {
+    public BudgetAdapter(Context context, List<BudgetItem> list, OnBudgetClickListener listener) {
         this.context = context;
         this.list = list;
+        this.listener = listener;
     }
 
     @Override
@@ -51,7 +58,6 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         BudgetItem item = list.get(position);
         
-        // Define color and icon mapping
         String catName = item.getCategoryName() != null ? item.getCategoryName() : "Khác";
         int iconRes = R.drawable.ic_payments;
         int bgTint = Color.parseColor("#FFF7ED"); // default Orange-light
@@ -63,8 +69,8 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             iconTint = Color.parseColor("#378ADD");
         } else if (catName.toLowerCase().contains("lương") || catName.toLowerCase().contains("thu nhập")) {
             iconRes = R.drawable.ic_money;
-            bgTint = Color.parseColor("#69F0AE");
-            iconTint = Color.parseColor("#064E3B");
+            bgTint = Color.parseColor("#DCFCE7");
+            iconTint = Color.parseColor("#059669");
         } else if (catName.toLowerCase().contains("mua sắm") || catName.toLowerCase().contains("quần áo")) {
             iconRes = R.drawable.ic_payments;
             bgTint = Color.parseColor("#FCE7F3");
@@ -86,38 +92,63 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             eh.tvRemainingAmount.setText("Còn lại " + formatMoney(remaining));
             
             eh.tvSpentAmount.setText(formatMoney(item.getCurrentAmount()));
-            eh.tvLimitAmount.setText(formatMoneyShort(item.getLimitAmount()));
+            eh.tvLimitAmount.setText("Giới hạn: " + formatMoney(item.getLimitAmount()));
             
             int percent = item.getLimitAmount() > 0 ? 
                     (int) ((item.getCurrentAmount() / item.getLimitAmount()) * 100) : 100;
             if (percent > 100) percent = 100;
-            eh.tvPercent.setText(percent + "%");
             eh.progressBudget.setProgress(percent);
             
-            if (percent > 90) {
-                eh.tvStatus.setText("VƯỢT MỨC");
-                eh.tvStatus.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.parseColor("#FEE2E2")));
-                eh.tvStatus.setTextColor(Color.parseColor("#991B1B"));
-            } else if (percent > 75) {
-                eh.tvStatus.setText("CẢNH BÁO");
-                eh.tvStatus.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.parseColor("#FEF3C7")));
-                eh.tvStatus.setTextColor(Color.parseColor("#92400E"));
+            // Red bar if limit exceeded
+            if (percent >= 100) {
+                eh.tvRemainingAmount.setTextColor(Color.parseColor("#EF4444"));
+                eh.tvRemainingAmount.setText("Vượt giới hạn!");
             } else {
-                eh.tvStatus.setText("AN TOÀN");
-                eh.tvStatus.setBackgroundTintList(android.content.res.ColorStateList.valueOf(Color.parseColor("#DCFCE7")));
-                eh.tvStatus.setTextColor(Color.parseColor("#166534"));
+                eh.tvRemainingAmount.setTextColor(Color.parseColor("#059669"));
             }
+
+            eh.btnEditBudget.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onEditClick(item);
+                }
+            });
+
+            eh.btnDeleteBudget.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onDeleteClick(item);
+                }
+            });
 
         } else if (holder instanceof IncomeViewHolder) {
             IncomeViewHolder ih = (IncomeViewHolder) holder;
             ih.tvCategoryName.setText(catName);
             ih.tvTotal.setText("+" + formatMoney(item.getCurrentAmount()));
+            ih.tvLimitAmount.setText("Giới hạn: " + formatMoney(item.getLimitAmount()));
+            
+            // Hide unwanted views for Income category budgets
+            ih.tvLimitAmount.setVisibility(View.GONE);
+            ih.btnEditBudget.setVisibility(View.GONE);
+            if (ih.layoutIncomeAmountRow != null) {
+                ih.layoutIncomeAmountRow.setVisibility(View.GONE);
+            }
             
             // Set dynamic icon and color
             ih.ivIconBudget.setImageResource(iconRes);
             ih.ivIconBudget.setColorFilter(iconTint);
             ((View) ih.ivIconBudget.getParent()).setBackgroundTintList(
                     android.content.res.ColorStateList.valueOf(bgTint));
+
+            ih.btnEditBudget.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onEditClick(item);
+                }
+            });
+
+            ih.btnDeleteBudget.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onDeleteClick(item);
+                }
+            });
         }
     }
 
@@ -129,43 +160,39 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private String formatMoney(double amount) {
         return String.format("%,.0fđ", amount).replace(",", ".");
     }
-    
-    private String formatMoneyShort(double amount) {
-        if (amount >= 1000000) {
-            return String.format("%,.0ftr", amount / 1000000).replace(",", ".");
-        } else if (amount >= 1000) {
-            return String.format("%,.0fk", amount / 1000).replace(",", ".");
-        }
-        return formatMoney(amount);
-    }
 
     static class ExpenseViewHolder extends RecyclerView.ViewHolder {
-        TextView tvCategoryName, tvRemainingAmount, tvStatus, tvSpentAmount, tvLimitAmount, tvPercent;
+        TextView tvCategoryName, tvRemainingAmount, tvSpentAmount, tvLimitAmount;
         ProgressBar progressBudget;
-        ImageView ivIconBudget;
+        ImageView ivIconBudget, btnEditBudget, btnDeleteBudget;
 
         public ExpenseViewHolder(@NonNull View itemView) {
             super(itemView);
             tvCategoryName = itemView.findViewById(R.id.tvCategoryName);
             tvRemainingAmount = itemView.findViewById(R.id.tvRemainingAmount);
-            tvStatus = itemView.findViewById(R.id.tvStatus);
             tvSpentAmount = itemView.findViewById(R.id.tvSpentAmount);
             tvLimitAmount = itemView.findViewById(R.id.tvLimitAmount);
-            tvPercent = itemView.findViewById(R.id.tvPercent);
             progressBudget = itemView.findViewById(R.id.progressBudget);
             ivIconBudget = itemView.findViewById(R.id.ivIconBudget);
+            btnEditBudget = itemView.findViewById(R.id.btnEditBudget);
+            btnDeleteBudget = itemView.findViewById(R.id.btnDeleteBudget);
         }
     }
 
     static class IncomeViewHolder extends RecyclerView.ViewHolder {
-        TextView tvCategoryName, tvTotal;
-        ImageView ivIconBudget;
+        TextView tvCategoryName, tvLimitAmount, tvTotal;
+        ImageView ivIconBudget, btnEditBudget, btnDeleteBudget;
+        View layoutIncomeAmountRow;
 
         public IncomeViewHolder(@NonNull View itemView) {
             super(itemView);
             tvCategoryName = itemView.findViewById(R.id.tvCategoryName);
+            tvLimitAmount = itemView.findViewById(R.id.tvLimitAmount);
             tvTotal = itemView.findViewById(R.id.tvTotal);
             ivIconBudget = itemView.findViewById(R.id.ivIconBudget);
+            btnEditBudget = itemView.findViewById(R.id.btnEditBudget);
+            btnDeleteBudget = itemView.findViewById(R.id.btnDeleteBudget);
+            layoutIncomeAmountRow = itemView.findViewById(R.id.layoutIncomeAmountRow);
         }
     }
 }

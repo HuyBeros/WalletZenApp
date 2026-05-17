@@ -46,6 +46,7 @@
 
         <!-- BUDGET -->
         <activity android:name=".ui.budget.BudgetActivity" android:exported="false" />
+        <activity android:name=".ui.budget.AddBudgetActivity" android:exported="false" />
 
         <!-- PROFILE -->
         <activity android:name=".ui.profile.ProfileActivity" android:exported="false" />

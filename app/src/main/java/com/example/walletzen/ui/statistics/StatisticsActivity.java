@@ -1,6 +1,8 @@
 package com.example.walletzen.ui.statistics;
 
 import android.os.Bundle;
+import android.widget.CalendarView;
+import android.app.AlertDialog;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +30,9 @@ public class StatisticsActivity extends AppCompatActivity {
     private BarChart barChart;
     private PieChart pieChart;
     private TextView tvIncomeMonth, tvExpenseMonth;
+    private CalendarView calendarView;
     private SessionManager session;
+    private List<com.example.walletzen.model.Transaction> allTransactions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +45,39 @@ public class StatisticsActivity extends AppCompatActivity {
         pieChart = findViewById(R.id.pieChart);
         tvIncomeMonth = findViewById(R.id.tvIncomeMonth);
         tvExpenseMonth = findViewById(R.id.tvExpenseMonth);
+        calendarView = findViewById(R.id.calendarView);
 
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
+
+        if (calendarView != null) {
+            calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
+                String selectedDateStr = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month + 1, dayOfMonth);
+                double dayIncome = 0;
+                double dayExpense = 0;
+                int count = 0;
+                for (com.example.walletzen.model.Transaction t : allTransactions) {
+                    String tDate = t.getDate();
+                    if (tDate != null && tDate.startsWith(selectedDateStr)) {
+                        double amt = t.getAmount() != null ? Math.abs(t.getAmount()) : 0;
+                        if ("THU".equals(t.getType())) {
+                            dayIncome += amt;
+                        } else if ("CHI".equals(t.getType())) {
+                            dayExpense += amt;
+                        }
+                        count++;
+                    }
+                }
+                
+                String displayDate = String.format(Locale.getDefault(), "%02d/%02d/%04d", dayOfMonth, month + 1, year);
+                new AlertDialog.Builder(StatisticsActivity.this)
+                        .setTitle("Giao dịch ngày " + displayDate)
+                        .setMessage(String.format(Locale.getDefault(),
+                                "Tổng số giao dịch: %d\n\n🟢 Thu nhập: +%s\n🔴 Chi tiêu: -%s",
+                                count, formatMoney(dayIncome), formatMoney(dayExpense)))
+                        .setPositiveButton("Đóng", null)
+                        .show();
+            });
+        }
 
         loadMonthStats();
         loadSpendingByCategory();
@@ -57,6 +92,8 @@ public class StatisticsActivity extends AppCompatActivity {
                     public void onResponse(Call<List<com.example.walletzen.model.Transaction>> call,
                                            Response<List<com.example.walletzen.model.Transaction>> response) {
                         if (response.isSuccessful() && response.body() != null) {
+                            allTransactions.clear();
+                            allTransactions.addAll(response.body());
                             String currentMonth = new java.text.SimpleDateFormat("yyyy-MM",
                                     java.util.Locale.getDefault()).format(new java.util.Date());
                             double income = 0, expense = 0;
@@ -156,22 +193,58 @@ public class StatisticsActivity extends AppCompatActivity {
         }
 
         BarDataSet incomeSet = new BarDataSet(incomeEntries, "Thu nhập");
-        incomeSet.setColor(0xFF00BCD4);
+        incomeSet.setColor(0xFF06B6D4); // Premium Modern Cyan/Teal
+        incomeSet.setDrawValues(false); // Clean modern look
+
         BarDataSet expenseSet = new BarDataSet(expenseEntries, "Chi tiêu");
-        expenseSet.setColor(0xFFFF4081);
+        expenseSet.setColor(0xFFF43F5E); // Premium Modern Rose/Red
+        expenseSet.setDrawValues(false); // Clean modern look
+
+        float groupSpace = 0.3f;
+        float barSpace = 0.05f;
+        float barWidth = 0.3f; // Math: (0.3 + 0.05)*2 + 0.3 = 1.0f
 
         BarData barData = new BarData(incomeSet, expenseSet);
-        barData.setBarWidth(0.35f);
-        barData.groupBars(0f, 0.2f, 0.05f);
+        barData.setBarWidth(barWidth);
 
         barChart.setData(barData);
+        barChart.groupBars(0f, groupSpace, barSpace);
+
+        // Chart styling & customization
         barChart.getDescription().setEnabled(false);
-        barChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
-        barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-        barChart.getXAxis().setGranularity(1f);
+        barChart.setDoubleTapToZoomEnabled(false);
+        barChart.setPinchZoom(false);
+        barChart.setScaleEnabled(false);
+
+        // XAxis styling
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setGranularity(1f);
+        xAxis.setCenterAxisLabels(true); // Center the labels under the groups
+        xAxis.setAxisMinimum(0f);
+        xAxis.setAxisMaximum(trend.size());
+        xAxis.setDrawGridLines(false); // No vertical grid lines
+        xAxis.setDrawAxisLine(true);
+        xAxis.setAxisLineColor(0x3F000000);
+        xAxis.setTextColor(0xFF4B5563);
+        xAxis.setTextSize(10f);
+
+        // YAxis Left styling
         barChart.getAxisLeft().setAxisMinimum(0f);
+        barChart.getAxisLeft().setDrawGridLines(true);
+        barChart.getAxisLeft().setGridColor(0x1F000000); // 12% opacity dark grid lines
+        barChart.getAxisLeft().setTextColor(0xFF4B5563);
+        barChart.getAxisLeft().setTextSize(10f);
+
+        // Disable YAxis Right
         barChart.getAxisRight().setEnabled(false);
+
+        // Legend styling
         barChart.getLegend().setEnabled(true);
+        barChart.getLegend().setTextColor(0xFF4B5563);
+        barChart.getLegend().setTextSize(11f);
+
         barChart.animateY(800);
         barChart.invalidate();
     }

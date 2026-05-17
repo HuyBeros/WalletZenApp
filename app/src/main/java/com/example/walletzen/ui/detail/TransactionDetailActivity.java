@@ -22,7 +22,7 @@ import retrofit2.Response;
 public class TransactionDetailActivity extends AppCompatActivity {
 
     private TextView tvIcon, tvCategory, tvAmount, tvDate, tvNote;
-    private MaterialButton btnDelete;
+    private MaterialButton btnDelete, btnEdit;
     private ImageView btnBack;
     private SessionManager session;
 
@@ -40,6 +40,7 @@ public class TransactionDetailActivity extends AppCompatActivity {
         tvNote = findViewById(R.id.tvDetailNote);
         // tvType removed
         btnDelete = findViewById(R.id.btnDelete);
+        btnEdit = findViewById(R.id.btnEdit);
         btnBack = findViewById(R.id.btnBack);
 
         btnBack.setOnClickListener(v -> finish());
@@ -83,6 +84,22 @@ public class TransactionDetailActivity extends AppCompatActivity {
         // Delete button
         if (transactionId != -1) {
             btnDelete.setOnClickListener(v -> confirmDelete(transactionId));
+        }
+
+        // Edit button
+        if (transactionId != -1) {
+            btnEdit.setOnClickListener(v -> {
+                Intent editIntent = new Intent(this, com.example.walletzen.ui.transaction.AddTransactionActivity.class);
+                editIntent.putExtra("transactionId", transactionId);
+                editIntent.putExtra("note", note);
+                editIntent.putExtra("amount", amount);
+                editIntent.putExtra("date", date);
+                editIntent.putExtra("type", type);
+                editIntent.putExtra("category", category);
+                editIntent.putExtra("icon", icon);
+                editIntent.putExtra("categoryId", intent.getLongExtra("categoryId", -1));
+                startActivity(editIntent);
+            });
         }
     }
 

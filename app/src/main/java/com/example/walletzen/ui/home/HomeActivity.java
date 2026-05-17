@@ -105,6 +105,9 @@ public class HomeActivity extends AppCompatActivity {
             intent.putExtra("type", transaction.getType());
             intent.putExtra("category", transaction.getCategoryName());
             intent.putExtra("icon", transaction.getCategoryIcon());
+            if (transaction.getCategory() != null) {
+                intent.putExtra("categoryId", transaction.getCategory().getCategoryId());
+            }
             startActivity(intent);
         });
         rvTransactions.setLayoutManager(new LinearLayoutManager(this));
