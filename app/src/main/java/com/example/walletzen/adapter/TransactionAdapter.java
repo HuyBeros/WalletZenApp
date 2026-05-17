@@ -35,7 +35,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     @NonNull
     @Override
     public TransactionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_transaction, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_transaction_full, parent, false);
         return new TransactionViewHolder(view);
     }
 
@@ -48,7 +48,13 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
         String formattedDate = t.getFormattedDate();
         
         holder.tvTransactionCategory.setText(catName);
-        holder.tvTransactionNote.setText(note + "  •  " + formattedDate);
+        holder.tvTransactionNote.setText(note);
+        if (holder.tvTransactionDate != null) {
+            holder.tvTransactionDate.setText(formattedDate);
+        }
+        
+        holder.ivIconFull.setVisibility(View.GONE);
+        holder.tvTransactionIcon.setVisibility(View.VISIBLE);
         holder.tvTransactionIcon.setText(t.getCategoryIcon());
 
         // Amount and Color based on type
@@ -76,18 +82,22 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
 
     static class TransactionViewHolder extends RecyclerView.ViewHolder {
         CardView cardTransactionIcon;
+        android.widget.ImageView ivIconFull;
         TextView tvTransactionIcon;
         TextView tvTransactionCategory;
         TextView tvTransactionNote;
         TextView tvTransactionAmount;
+        TextView tvTransactionDate;
 
         public TransactionViewHolder(@NonNull View itemView) {
             super(itemView);
-            cardTransactionIcon = itemView.findViewById(R.id.cardTransactionIcon);
-            tvTransactionIcon = itemView.findViewById(R.id.tvTransactionIcon);
-            tvTransactionCategory = itemView.findViewById(R.id.tvTransactionCategory);
-            tvTransactionNote = itemView.findViewById(R.id.tvTransactionNote);
-            tvTransactionAmount = itemView.findViewById(R.id.tvTransactionAmount);
+            cardTransactionIcon = itemView.findViewById(R.id.cardIconFull);
+            ivIconFull = itemView.findViewById(R.id.ivIconFull);
+            tvTransactionIcon = itemView.findViewById(R.id.tvIconFull);
+            tvTransactionCategory = itemView.findViewById(R.id.tvCategoryFull);
+            tvTransactionNote = itemView.findViewById(R.id.tvNoteFull);
+            tvTransactionAmount = itemView.findViewById(R.id.tvAmountFull);
+            tvTransactionDate = itemView.findViewById(R.id.tvDateFull);
         }
     }
 }

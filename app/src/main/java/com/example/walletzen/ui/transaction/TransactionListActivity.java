@@ -164,6 +164,13 @@ public class TransactionListActivity extends AppCompatActivity {
                         if (response.isSuccessful() && response.body() != null) {
                             allTransactions.clear();
                             allTransactions.addAll(response.body());
+                            // Sort by transactionId descending (newest first)
+                            java.util.Collections.sort(allTransactions, (t1, t2) -> {
+                                if (t1.getTransactionId() != null && t2.getTransactionId() != null) {
+                                    return t2.getTransactionId().compareTo(t1.getTransactionId());
+                                }
+                                return 0;
+                            });
                             applyFilters();
                         } else {
                             showEmpty("Không tải được dữ liệu");
@@ -196,9 +203,9 @@ public class TransactionListActivity extends AppCompatActivity {
             // 2. Type filter
             boolean matchType = true;
             if ("Thu nhập".equals(selectedType)) {
-                matchType = "THU".equals(t.getType());
+                matchType = "THU".equalsIgnoreCase(t.getType());
             } else if ("Chi tiêu".equals(selectedType)) {
-                matchType = "CHI".equals(t.getType());
+                matchType = "CHI".equalsIgnoreCase(t.getType());
             }
 
             // Extract date only (yyyy-MM-dd)

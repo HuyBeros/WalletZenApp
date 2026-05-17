@@ -121,7 +121,7 @@
                         android:id="@+id/spinnerType"
                         android:layout_width="match_parent"
                         android:layout_height="40dp"
-                        android:background="@drawable/bg_input"
+                        android:background="@drawable/bg_spinner"
                         android:paddingHorizontal="8dp" />
                 </LinearLayout>
 

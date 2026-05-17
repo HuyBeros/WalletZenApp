@@ -82,6 +82,16 @@ public class ProfileActivity extends AppCompatActivity {
         String fullName = edtFullName.getText().toString().trim();
         String email = edtEmail.getText().toString().trim();
 
+        if (fullName.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập họ và tên", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "Email không hợp lệ", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         User userDetails = new User();
         userDetails.setFullName(fullName);
         userDetails.setEmail(email);

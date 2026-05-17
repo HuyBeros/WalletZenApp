@@ -232,6 +232,12 @@ public class HomeActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     transactionList.clear();
                     transactionList.addAll(response.body());
+                    java.util.Collections.sort(transactionList, (t1, t2) -> {
+                        if (t1.getTransactionId() != null && t2.getTransactionId() != null) {
+                            return t2.getTransactionId().compareTo(t1.getTransactionId());
+                        }
+                        return 0;
+                    });
                     adapter.notifyDataSetChanged();
                     tvEmptyState.setVisibility(transactionList.isEmpty() ? View.VISIBLE : View.GONE);
                 }
