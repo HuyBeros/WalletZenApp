@@ -18,8 +18,6 @@ import com.example.walletzen.network.RetrofitClient;
 import com.example.walletzen.network.TransactionResponse;
 import com.example.walletzen.ui.home.HomeActivity;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
@@ -33,9 +31,8 @@ import retrofit2.Response;
 
 public class AddTransactionActivity extends AppCompatActivity {
 
-    private TextInputEditText edtAmount, edtNote, edtDate;
-    private ChipGroup chipGroupType;
-    private Chip chipExpense, chipIncome;
+    private TextInputEditText edtAmount, edtNote;
+    private TextView chipExpense, chipIncome;
     private AutoCompleteTextView spinnerCategory;
     private int selectedCategoryIndex = -1;
     private MaterialButton btnSave;
@@ -55,54 +52,46 @@ public class AddTransactionActivity extends AppCompatActivity {
 
         initViews();
         loadCategories("CHI");
-        setupDatePicker();
+        // Date picker removed
     }
 
     private void initViews() {
-        edtAmount = findViewById(R.id.edtAmount);
-        edtNote = findViewById(R.id.edtNote);
-        edtDate = findViewById(R.id.edtDate);
-        chipGroupType = findViewById(R.id.chipGroupType);
+        edtAmount   = findViewById(R.id.edtAmount);
+        edtNote     = findViewById(R.id.edtNote);
+        // edtDate removed
         chipExpense = findViewById(R.id.chipExpense);
-        chipIncome = findViewById(R.id.chipIncome);
+        chipIncome  = findViewById(R.id.chipIncome);
         spinnerCategory = findViewById(R.id.spinnerCategory);
-        spinnerCategory.setOnItemClickListener((parent, view, position, id) -> {
-            selectedCategoryIndex = position;
-        });
-        btnSave = findViewById(R.id.btnSave);
-        btnBack = findViewById(R.id.btnBack);
+        btnSave     = findViewById(R.id.btnSave);
+        btnBack     = (ImageView) findViewById(R.id.btnBack);
         progressBar = findViewById(R.id.progressBar);
 
-        // Default date = today
-        Calendar cal = Calendar.getInstance();
-        String today = String.format(Locale.getDefault(), "%04d-%02d-%02d",
-                cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH));
-        edtDate.setText(today);
+        spinnerCategory.setOnItemClickListener((parent, view, position, id) ->
+                selectedCategoryIndex = position);
 
-        // Chip type change
-        chipGroupType.setOnCheckedStateChangeListener((group, checkedIds) -> {
-            if (checkedIds.contains(R.id.chipExpense)) {
-                selectedType = "CHI";
-                loadCategories("CHI");
-            } else if (checkedIds.contains(R.id.chipIncome)) {
-                selectedType = "THU";
-                loadCategories("THU");
-            }
+        // Default date = today
+        // Date is now handled automatically when saving
+
+        // Initial visual state — Chi tiêu selected
+        setToggleSelected(chipExpense, chipIncome);
+
+        // Toggle click listeners
+        chipExpense.setOnClickListener(v -> {
+            selectedType = "CHI";
+            setToggleSelected(chipExpense, chipIncome);
+            loadCategories("CHI");
+        });
+        chipIncome.setOnClickListener(v -> {
+            selectedType = "THU";
+            setToggleSelected(chipIncome, chipExpense);
+            loadCategories("THU");
         });
 
         btnBack.setOnClickListener(v -> finish());
         btnSave.setOnClickListener(v -> saveTransaction());
     }
 
-    private void setupDatePicker() {
-        edtDate.setOnClickListener(v -> {
-            Calendar c = Calendar.getInstance();
-            new DatePickerDialog(this, (view, year, month, day) -> {
-                String date = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month + 1, day);
-                edtDate.setText(date);
-            }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
-        });
-    }
+
 
     private void loadCategories(String type) {
         RetrofitClient.getApiService().getCategoriesByType(type).enqueue(new Callback<List<Category>>() {
@@ -121,7 +110,8 @@ public class AddTransactionActivity extends AppCompatActivity {
                     selectedCategoryIndex = -1;
                     spinnerCategory.setText("", false);
                     if (names.isEmpty()) {
-                        Toast.makeText(AddTransactionActivity.this, "Chưa có danh mục cho loại này!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddTransactionActivity.this,
+                                "Chưa có danh mục cho loại này!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -135,8 +125,10 @@ public class AddTransactionActivity extends AppCompatActivity {
 
     private void saveTransaction() {
         String amountStr = edtAmount.getText().toString().trim();
-        String note = edtNote.getText().toString().trim();
-        String date = edtDate.getText().toString().trim();
+        String note      = edtNote.getText().toString().trim();
+        Calendar cal = Calendar.getInstance();
+        String date = String.format(Locale.getDefault(), "%04d-%02d-%02d",
+                cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH));
 
         if (TextUtils.isEmpty(amountStr)) {
             edtAmount.setError("Nhập số tiền");
@@ -148,21 +140,21 @@ public class AddTransactionActivity extends AppCompatActivity {
         }
 
         double amount;
-        try { amount = Double.parseDouble(amountStr); }
-        catch (NumberFormatException e) {
+        try {
+            amount = Double.parseDouble(amountStr);
+        } catch (NumberFormatException e) {
             edtAmount.setError("Số tiền không hợp lệ");
+            return;
+        }
+
+        if (selectedCategoryIndex < 0 || selectedCategoryIndex >= categoryList.size()) {
+            Toast.makeText(this, "Vui lòng chọn danh mục", Toast.LENGTH_SHORT).show();
             return;
         }
 
         progressBar.setVisibility(View.VISIBLE);
         btnSave.setEnabled(false);
 
-        if (selectedCategoryIndex < 0 || selectedCategoryIndex >= categoryList.size()) {
-            Toast.makeText(this, "Vui lòng chọn danh mục", Toast.LENGTH_SHORT).show();
-            progressBar.setVisibility(View.GONE);
-            btnSave.setEnabled(true);
-            return;
-        }
         Category selectedCat = categoryList.get(selectedCategoryIndex);
 
         User user = new User();
@@ -198,5 +190,17 @@ public class AddTransactionActivity extends AppCompatActivity {
                         "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    /**
+     * Switches the pill segment toggle visual state.
+     * @param selected   Active tab — white background, blue text
+     * @param unselected Inactive tab — transparent, faded white text
+     */
+    private void setToggleSelected(TextView selected, TextView unselected) {
+        selected.setBackgroundResource(R.drawable.bg_toggle_selected);
+        selected.setTextColor(getResources().getColor(R.color.primary_light, getTheme()));
+        unselected.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+        unselected.setTextColor((int) 0xCCE8F4FFL);
     }
 }

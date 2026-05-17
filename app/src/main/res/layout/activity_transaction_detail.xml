@@ -10,212 +10,177 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_gradient_header"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:paddingTop="40dp"
         android:paddingBottom="20dp">
 
         <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:tint="#FFFFFF"
-            android:padding="8dp"
-            android:background="@drawable/bg_avatar_circle" />
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/back"
+            app:tint="@color/primary"
+            android:padding="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Chi tiết giao dịch"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
+            android:textColor="@color/primary"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-medium"
             android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginEnd="40dp" />
+            android:gravity="center" />
 
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="20dp"
+            android:gravity="center_horizontal">
 
-            <!-- ICON + AMOUNT CARD -->
+            <!-- Hero Section -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_card"
-                android:elevation="6dp"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:padding="32dp"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="24dp">
 
-                <!-- Icon tròn gradient -->
                 <LinearLayout
+                    android:id="@+id/llIconBackground"
                     android:layout_width="88dp"
                     android:layout_height="88dp"
-                    android:background="@drawable/bg_balance_card"
+                    android:background="@drawable/bg_icon_circle"
+                    android:backgroundTint="@color/primary"
                     android:gravity="center"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="16dp"
+                    android:elevation="4dp">
 
                     <TextView
                         android:id="@+id/tvDetailIcon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="💰"
+                        android:src="@drawable/categorie"
+                        android:textColor="#FFFFFF"
                         android:textSize="40sp"
                         android:gravity="center" />
-
                 </LinearLayout>
 
-                <!-- Category -->
                 <TextView
                     android:id="@+id/tvDetailCategory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Danh mục"
-                    android:textColor="@color/text_secondary"
-                    android:textSize="15sp"
+                    android:textColor="@color/text_primary"
+                    android:textSize="18sp"
+                    android:fontFamily="sans-serif-medium"
                     android:layout_marginBottom="8dp" />
 
-                <!-- Amount -->
                 <TextView
                     android:id="@+id/tvDetailAmount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0 ₫"
+                    android:text="- 0 đ"
                     android:textColor="@color/expense_red"
-                    android:textSize="38sp"
-                    android:textStyle="bold" />
+                    android:textSize="32sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="4dp" />
 
-                <!-- Type badge -->
                 <TextView
-                    android:id="@+id/tvDetailType"
+                    android:id="@+id/tvStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Chi tiêu"
-                    android:background="@drawable/bg_badge"
-                    android:textColor="#FFFFFF"
-                    android:textSize="12sp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:layout_marginTop="14dp" />
-
+                    android:text="Giao dịch đã hoàn tất"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp"
+                    android:fontFamily="sans-serif" />
             </LinearLayout>
 
-            <!-- DETAIL INFO CARD -->
-            <LinearLayout
+            <!-- Card 1: Time -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_card"
-                android:elevation="4dp"
-                android:orientation="vertical"
-                android:padding="20dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/surface"
                 android:layout_marginBottom="16dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Thông tin giao dịch"
-                    android:textColor="@color/text_primary"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="16dp" />
-
-                <!-- Date row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginBottom="14dp">
+                    android:padding="20dp">
 
-                    <!-- Date icon -->
-                    <LinearLayout
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_icon_circle"
-                        android:gravity="center"
-                        android:layout_marginEnd="12dp">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/calender"
+                        app:tint="@color/primary"
+                        android:layout_marginEnd="16dp" />
 
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@android:drawable/ic_menu_today"
-                            android:tint="@color/primary" />
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:text="Thời gian"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="15sp"
+                        android:fontFamily="sans-serif" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Ngày giao dịch"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:id="@+id/tvDetailDate"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="—"
-                            android:textColor="@color/text_primary"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="2dp" />
-                    </LinearLayout>
-
+                    <TextView
+                        android:id="@+id/tvDetailDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="—"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp"
+                        android:fontFamily="sans-serif-medium"
+                        android:textStyle="bold" />
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/divider"
-                    android:layout_marginBottom="14dp" />
+            <!-- Card 2: Note -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/surface"
+                android:layout_marginBottom="16dp">
 
-                <!-- Note row -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:gravity="center_vertical">
+                    android:gravity="top"
+                    android:padding="20dp">
 
-                    <!-- Note icon -->
-                    <LinearLayout
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_icon_circle"
-                        android:gravity="center"
-                        android:layout_marginEnd="12dp">
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@android:drawable/ic_menu_edit"
-                            android:tint="@color/primary" />
-                    </LinearLayout>
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/ic_menu_sort_by_size"
+                        app:tint="@color/primary"
+                        android:layout_marginEnd="16dp" />
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:orientation="vertical">
 
                         <TextView
@@ -223,40 +188,80 @@
                             android:layout_height="wrap_content"
                             android:text="Ghi chú"
                             android:textColor="@color/text_secondary"
-                            android:textSize="12sp" />
+                            android:textSize="15sp"
+                            android:fontFamily="sans-serif"
+                            android:layout_marginBottom="8dp" />
 
                         <TextView
                             android:id="@+id/tvDetailNote"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="—"
                             android:textColor="@color/text_primary"
-                            android:textSize="14sp"
-                            android:layout_marginTop="2dp" />
+                            android:textSize="15sp"
+                            android:fontStyle="italic"
+                            android:lineSpacingExtra="4dp"
+                            android:fontFamily="sans-serif" />
                     </LinearLayout>
-
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- Bottom Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="10"
+                android:layout_marginBottom="16dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDelete"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="4.5"
+                    android:backgroundTint="#F74D4F"
+                    android:text="Xóa"
+                    android:textColor="#ffffff"
+                    android:textSize="15sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textStyle="bold"
+                    android:textAllCaps="false"
+                    app:cornerRadius="14dp"
+                    app:icon="@drawable/delete"
+                    app:iconTint="#ffffff"
+                    app:iconGravity="textStart"
+                    app:elevation="0dp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="56dp"
+                    android:layout_weight="5"
+                    android:backgroundTint="@color/primary"
+                    android:text="Chỉnh sửa"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textStyle="bold"
+                    android:textAllCaps="false"
+                    app:cornerRadius="14dp"
+                    app:icon="@drawable/edit"
+                    app:iconTint="#FFFFFF"
+                    app:iconGravity="textStart"
+                    app:elevation="0dp" />
 
             </LinearLayout>
 
-            <!-- DELETE BUTTON -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnDelete"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:layout_marginBottom="20dp"
-                android:backgroundTint="@color/expense_red"
-                android:text="Xóa giao dịch"
-                android:textColor="#FFFFFF"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:cornerRadius="14dp"
-                app:icon="@android:drawable/ic_menu_delete"
-                app:iconTint="#FFFFFF"
-                app:iconGravity="start" />
-
         </LinearLayout>
-
     </ScrollView>
-
 </LinearLayout>

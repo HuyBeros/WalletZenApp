@@ -6,4 +6,16 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <!-- Rounded square shape for FAB -->
+    <style name="ShapeAppearance.FabRounded" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">18dp</item>
+    </style>
+
+    <!-- Custom style for CalendarView to fix linking error -->
+    <style name="Widget.CalendarView.Custom" parent="android:Widget.CalendarView">
+        <item name="android:focusedMonthDateColor">@color/primary</item>
+        <item name="android:weekSeparatorLineColor">@color/divider</item>
+    </style>
+
 </resources>

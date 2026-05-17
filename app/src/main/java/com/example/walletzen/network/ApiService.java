@@ -1,5 +1,6 @@
 package com.example.walletzen.network;
 
+import com.example.walletzen.model.Budget;
 import com.example.walletzen.model.Category;
 import com.example.walletzen.model.Transaction;
 import com.example.walletzen.model.User;
@@ -73,6 +74,11 @@ public interface ApiService {
     Call<List<Transaction>> searchTransactions(@Query("note") String note,
                                                @Query("userId") Long userId);
 
+    // GET /api/transactions?userId=1&type=THU
+    @GET("api/transactions")
+    Call<List<Transaction>> getTransactionsByType(@Query("userId") Long userId,
+                                                   @Query("type") String type);
+
     // ============ CATEGORIES ============
 
     // GET /api/categories?type=CHI  (type optional)
@@ -106,4 +112,8 @@ public interface ApiService {
     @GET("api/dashboard/trend")
     Call<List<Map<String, Object>>> getTrend(@Query("userId") Long userId,
                                              @Query("months") int months);
+
+    // ============ BUDGETS ============
+    @GET("api/budgets")
+    Call<List<Budget>> getBudgets(@Query("userId") Long userId);
 }

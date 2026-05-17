@@ -36,12 +36,16 @@
 
         <!-- TRANSACTION -->
         <activity android:name=".ui.transaction.AddTransactionActivity" android:exported="false" />
+        <activity android:name=".ui.transaction.TransactionListActivity" android:exported="false" />
 
         <!-- DETAIL -->
         <activity android:name=".ui.detail.TransactionDetailActivity" android:exported="false" />
 
         <!-- STATISTICS -->
         <activity android:name=".ui.statistics.StatisticsActivity" android:exported="false" />
+
+        <!-- BUDGET -->
+        <activity android:name=".ui.budget.BudgetActivity" android:exported="false" />
 
         <!-- PROFILE -->
         <activity android:name=".ui.profile.ProfileActivity" android:exported="false" />

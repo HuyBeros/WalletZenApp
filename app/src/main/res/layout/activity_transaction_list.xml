@@ -6,156 +6,234 @@
     android:orientation="vertical"
     android:background="@color/background">
 
-    <!-- Header & Search -->
+    <!-- Header -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/surface"
-        app:elevation="4dp">
+        app:elevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="16dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/back"
+                app:tint="@color/text_primary"
+                android:padding="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Giao dịch"
-                android:textSize="22sp"
+                android:text="Tất cả giao dịch"
+                android:textSize="20sp"
+                android:fontFamily="sans-serif-medium"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary" />
+                android:textColor="@color/text_primary"
+                android:layout_marginStart="4dp" />
 
-            <ImageButton
-                android:id="@+id/btnFilter"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@android:drawable/ic_menu_sort_by_size"
-                android:tint="@color/primary"
-                android:contentDescription="Lọc" />
         </LinearLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            app:boxCornerRadiusTopStart="14dp"
-            app:boxCornerRadiusTopEnd="14dp"
-            app:boxCornerRadiusBottomStart="14dp"
-            app:boxCornerRadiusBottomEnd="14dp"
-            app:startIconDrawable="@android:drawable/ic_menu_search"
-            app:endIconMode="clear_text">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtSearchNote"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Tìm theo ghi chú..."
-                android:inputType="text"
-                android:maxLines="1" />
-        </com.google.android.material.textfield.TextInputLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <!-- Month Selector & Calendar Strip -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="12dp"
-        android:gravity="center_vertical"
-        android:background="@color/surface"
-        android:layout_marginTop="8dp">
-
-        <ImageButton
-            android:id="@+id/btnPrevMonth"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_media_previous"
-            android:tint="@color/primary" />
-
-        <TextView
-            android:id="@+id/tvCurrentMonth"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Tháng 5, 2026"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textColor="@color/primary"
-            android:textSize="16sp" />
-
-        <ImageButton
-            android:id="@+id/btnNextMonth"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_media_next"
-            android:tint="@color/primary" />
-    </LinearLayout>
-
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scrollbars="none"
-        android:background="@color/surface"
-        android:paddingBottom="8dp">
-        
-        <!-- Placeholder cho Calendar Strip ngang (các ngày trong tháng) -->
+        <!-- Search bar -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingStart="16dp"
-            android:paddingEnd="16dp">
-            <!-- Items ngày sẽ được add từ Java -->
-        </LinearLayout>
-    </HorizontalScrollView>
+            android:paddingEnd="16dp"
+            android:paddingBottom="8dp"
+            android:gravity="center_vertical">
 
-    <!-- Transaction List -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:hintEnabled="false"
+                app:boxCornerRadiusTopStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxStrokeColor="@color/border"
+                app:boxStrokeWidth="1dp"
+                app:startIconDrawable="@drawable/search"
+                app:startIconTint="@color/text_hint">
+
+                <EditText
+                    android:id="@+id/edtSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Tìm kiếm giao dịch..."
+                    android:textColorHint="@color/text_hint"
+                    android:fontFamily="sans-serif"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:background="@android:color/transparent"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <!-- Filters (Android adaptation of Web) -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:paddingBottom="12dp"
+            android:clipToPadding="false">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:gravity="bottom">
+
+                <!-- Loại giao dịch -->
+                <LinearLayout
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="12dp">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Loại giao dịch"
+                        android:textSize="12sp"
+                        android:textColor="@color/text_secondary"
+                        android:layout_marginBottom="4dp"/>
+                        
+                    <Spinner
+                        android:id="@+id/spinnerType"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_input"
+                        android:paddingHorizontal="8dp" />
+                </LinearLayout>
+
+                <!-- Từ ngày -->
+                <LinearLayout
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="12dp">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Từ ngày"
+                        android:textSize="12sp"
+                        android:textColor="@color/text_secondary"
+                        android:layout_marginBottom="4dp"/>
+                        
+                    <TextView
+                        android:id="@+id/tvFromDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_input"
+                        android:text="nn/mm/yyyy"
+                        android:textColor="@color/text_secondary"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="12dp"
+                        app:drawableEndCompat="@drawable/calendar"
+                        app:drawableTint="@color/text_secondary" />
+                </LinearLayout>
+
+                <!-- Đến ngày -->
+                <LinearLayout
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginEnd="12dp">
+                    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đến ngày"
+                        android:textSize="12sp"
+                        android:textColor="@color/text_secondary"
+                        android:layout_marginBottom="4dp"/>
+                        
+                    <TextView
+                        android:id="@+id/tvToDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:background="@drawable/bg_input"
+                        android:text="nn/mm/yyyy"
+                        android:textColor="@color/text_secondary"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="12dp"
+                        app:drawableEndCompat="@drawable/calendar"
+                        app:drawableTint="@color/text_secondary" />
+                </LinearLayout>
+
+                <!-- Nút xóa bộ lọc -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnClearFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="Xóa bộ lọc"
+                    android:textColor="@android:color/white"
+                    app:backgroundTint="#64748B"
+                    app:cornerRadius="6dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:paddingHorizontal="16dp" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/divider"/>
+
+    <!-- Content -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="8dp">
+        android:layout_weight="1">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
 
         <TextView
-            android:id="@+id/tvEmptyList"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvEmpty"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Không có giao dịch nào"
             android:textColor="@color/text_hint"
-            android:drawableTop="@android:drawable/ic_menu_info_details"
-            android:drawablePadding="8dp"
+            android:fontFamily="sans-serif"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:padding="48dp"
             android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvTransactionsFull"
+            android:id="@+id/rvTransactions"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingBottom="80dp" /> <!-- Padding for FAB -->
-    </FrameLayout>
+            android:paddingTop="8dp"
+            android:paddingBottom="80dp" />
 
-    <!-- Floating Action Button -->
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/fabAddTransaction"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:text="Thêm"
-        app:icon="@android:drawable/ic_input_add"
-        app:backgroundTint="@color/primary"
-        android:textColor="@android:color/white"
-        app:iconTint="@android:color/white" />
+    </FrameLayout>
 
 </LinearLayout>

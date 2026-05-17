@@ -6,311 +6,414 @@
     android:orientation="vertical"
     android:background="@color/background">
 
-    <!-- HEADER -->
+    <!-- HEADER (App Bar) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_gradient_header"
+        android:background="@color/primary_light"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:padding="16dp"
         android:paddingTop="40dp"
         android:paddingBottom="20dp">
-
+        <!-- In the image, header is just blue. We can use primary_light or primary -->
         <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:tint="#FFFFFF"
-            android:padding="8dp"
-            android:background="@drawable/bg_avatar_circle" />
+            app:tint="#FFFFFF"
+            android:background="?attr/selectableItemBackgroundBorderless" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Thống kê"
+            android:text="Thống kê - WalletZen"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:layout_marginEnd="40dp" />
+            android:layout_marginEnd="32dp" />
 
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:padding="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="vertical">
 
             <!-- THÁNG NÀY SUMMARY -->
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_card"
-                android:elevation="4dp"
-                android:orientation="vertical"
-                android:padding="20dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/surface"
                 android:layout_marginBottom="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="16dp">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
+                    <!-- Header -->
                     <LinearLayout
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_icon_circle"
-                        android:gravity="center"
-                        android:layout_marginEnd="12dp">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="24dp">
 
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@android:drawable/ic_menu_today"
-                            android:tint="@color/primary" />
+                        <LinearLayout
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_icon_circle"
+                            android:backgroundTint="@color/cat_transport"
+                            android:gravity="center"
+                            android:layout_marginEnd="12dp">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/calender"
+                                app:tint="@color/primary" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tháng này"
+                            android:textColor="@color/text_primary"
+                            android:textSize="18sp"
+                            android:fontFamily="sans-serif-medium"
+                            android:textStyle="bold" />
                     </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <!-- Columns -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tháng này"
-                        android:textColor="@color/text_primary"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:baselineAligned="false"
+                        android:orientation="horizontal">
+
+                        <!-- Income -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/up"
+                                android:layout_marginBottom="8dp"
+                                app:tint="@color/income_green" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Thu nhập"
+                                android:textColor="@color/text_secondary"
+                                android:fontFamily="sans-serif"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tvIncomeMonth"
+                                android:layout_width="match_parent"
+                                android:layout_height="24dp"
+                                android:text="+0 ₫"
+                                android:maxLines="1"
+                                android:gravity="center"
+                                app:autoSizeTextType="uniform"
+                                app:autoSizeMinTextSize="9sp"
+                                app:autoSizeMaxTextSize="15sp"
+                                app:autoSizeStepGranularity="1sp"
+                                android:textColor="@color/income_green"
+                                android:fontFamily="sans-serif-medium"
+                                android:textStyle="bold"
+                                android:layout_marginTop="4dp" />
+                        </LinearLayout>
+
+                        <!-- Expense -->
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/down"
+                                app:tint="@color/expense_red"
+                                android:layout_marginBottom="8dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Chi tiêu"
+                                android:textColor="@color/text_secondary"
+                                android:fontFamily="sans-serif"
+                                android:textSize="12sp" />
+
+                            <TextView
+                                android:id="@+id/tvExpenseMonth"
+                                android:layout_width="match_parent"
+                                android:layout_height="24dp"
+                                android:text="-0 ₫"
+                                android:maxLines="1"
+                                android:gravity="center"
+                                app:autoSizeTextType="uniform"
+                                app:autoSizeMinTextSize="9sp"
+                                app:autoSizeMaxTextSize="15sp"
+                                app:autoSizeStepGranularity="1sp"
+                                android:textColor="@color/expense_red"
+                                android:fontFamily="sans-serif-medium"
+                                android:textStyle="bold"
+                                android:layout_marginTop="4dp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- LỊCH GIAO DỊCH CARD -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/surface"
+                android:layout_marginBottom="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                    <!-- Income -->
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:background="@drawable/bg_card"
-                        android:padding="12dp">
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
+
+                        <LinearLayout
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_icon_circle"
+                            android:backgroundTint="@color/cat_transport"
+                            android:gravity="center"
+                            android:layout_marginEnd="12dp">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/transation"
+                                app:tint="@color/primary" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:text="Lịch giao\ndịch"
+                            android:textColor="@color/text_primary"
+                            android:textSize="18sp"
+                            android:fontFamily="sans-serif-medium"
+                            android:textStyle="bold" />
 
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@android:drawable/arrow_up_float"
-                            android:tint="@color/income_green"
-                            android:layout_marginBottom="6dp" />
+                            android:src="@drawable/calender"
+                            app:tint="@color/text_secondary"
+                            android:padding="2dp"
+                            android:background="@drawable/bg_input" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Thu nhập"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:id="@+id/tvIncomeMonth"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="+0 ₫"
-                            android:textColor="@color/income_green"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="4dp" />
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="8dp"
-                        android:layout_height="0dp" />
-
-                    <!-- Expense -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:background="@drawable/bg_card"
-                        android:padding="12dp">
+                            android:text="Tháng 10,\n2023"
+                            android:gravity="center"
+                            android:textSize="12sp"
+                            android:textColor="@color/text_primary"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"/>
 
                         <ImageView
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:src="@android:drawable/arrow_down_float"
-                            android:tint="@color/expense_red"
-                            android:layout_marginBottom="6dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Chi tiêu"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:id="@+id/tvExpenseMonth"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="-0 ₫"
-                            android:textColor="@color/expense_red"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="4dp" />
-
+                            android:src="@drawable/ic_chevron_right"
+                            app:tint="@color/text_secondary"
+                            android:padding="2dp"
+                            android:background="@drawable/bg_input" />
                     </LinearLayout>
 
-                    <View
-                        android:layout_width="8dp"
-                        android:layout_height="0dp" />
-
-                    <!-- Balance -->
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <!-- Placeholder Calendar (Simplified for UI representation) -->
+                    <CalendarView
+                        android:id="@+id/calendarView"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:background="@drawable/bg_icon_circle"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@android:drawable/ic_menu_manage"
-                            android:tint="@color/primary"
-                            android:layout_marginBottom="6dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Dư"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:id="@+id/tvBalanceMonth"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0 ₫"
-                            android:textColor="@color/primary"
-                            android:textSize="14sp"
-                            android:textStyle="bold"
-                            android:layout_marginTop="4dp" />
-
-                    </LinearLayout>
-
+                        android:theme="@style/Widget.CalendarView.Custom" />
+                        
                 </LinearLayout>
-
-            </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <!-- PIE CHART CARD -->
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_card"
-                android:elevation="4dp"
-                android:orientation="vertical"
-                android:padding="20dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/surface"
                 android:layout_marginBottom="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="12dp">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
                     <LinearLayout
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_icon_circle"
-                        android:gravity="center"
-                        android:layout_marginEnd="12dp">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
 
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@android:drawable/ic_menu_compass"
-                            android:tint="@color/primary" />
+                        <LinearLayout
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_icon_circle"
+                            android:backgroundTint="@color/cat_shopping"
+                            android:gravity="center"
+                            android:layout_marginEnd="12dp">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/categorie"
+                                app:tint="#9333EA" /> <!-- Purple tint -->
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Chi tiêu theo danh mục"
+                            android:textColor="@color/text_primary"
+                            android:textSize="18sp"
+                            android:fontFamily="sans-serif-medium"
+                            android:textStyle="bold" />
+
                     </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/pieChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp" />
+
+                    <!-- Fake Legend to match the image -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Chi tiêu theo danh mục"
-                        android:textColor="@color/text_primary"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp"
+                        android:weightSum="2">
+                        
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="● Ăn uống        35%" android:textColor="@color/text_secondary" android:textSize="12sp" android:layout_marginBottom="8dp"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="● Mua sắm      20%" android:textColor="@color/text_secondary" android:textSize="12sp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="● Di chuyển     30%" android:textColor="@color/text_secondary" android:textSize="12sp" android:layout_marginBottom="8dp"/>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="● Khác             15%" android:textColor="@color/text_secondary" android:textSize="12sp"/>
+                        </LinearLayout>
+                    </LinearLayout>
 
                 </LinearLayout>
-
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/pieChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="260dp" />
-
-            </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <!-- BAR CHART CARD -->
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_card"
-                android:elevation="4dp"
-                android:orientation="vertical"
-                android:padding="20dp"
-                android:layout_marginBottom="16dp">
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardBackgroundColor="@color/surface"
+                android:layout_marginBottom="24dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="12dp">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
                     <LinearLayout
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_icon_circle"
-                        android:gravity="center"
-                        android:layout_marginEnd="12dp">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="16dp">
 
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@android:drawable/ic_menu_sort_by_size"
-                            android:tint="@color/primary" />
+                        <LinearLayout
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:background="@drawable/bg_icon_circle"
+                            android:backgroundTint="@color/cat_health"
+                            android:gravity="center"
+                            android:layout_marginEnd="12dp">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/chart"
+                                app:tint="@color/income_green" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Xu hướng 6 tháng gần đây"
+                            android:textColor="@color/text_primary"
+                            android:textSize="18sp"
+                            android:fontFamily="sans-serif-medium"
+                            android:textStyle="bold" />
+
                     </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Xu hướng 6 tháng gần đây"
-                        android:textColor="@color/text_primary"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/barChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp" />
 
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/barChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="240dp" />
-
-            </LinearLayout>
 
         </LinearLayout>
 

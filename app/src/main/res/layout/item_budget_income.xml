@@ -1,58 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="6dp"
-    app:cardCornerRadius="14dp"
-    app:cardElevation="2dp"
-    app:cardBackgroundColor="@color/surface">
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:strokeColor="#059669"
+    app:strokeWidth="1.5dp"
+    app:cardBackgroundColor="@android:color/transparent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="16dp"
+        android:padding="12dp"
         android:background="?attr/selectableItemBackground">
 
-        <TextView
-            android:id="@+id/tvIconBudget"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/bg_icon_circle"
-            android:text="💰"
-            android:gravity="center"
-            android:textSize="20sp" />
+        <!-- Icon in rounded square -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="#69F0AE"
+            android:layout_marginEnd="12dp">
 
-        <TextView
-            android:id="@+id/tvCategoryName"
+            <ImageView
+                android:id="@+id/ivIconBudget"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_money"
+                app:tint="#064E3B" />
+        </androidx.cardview.widget.CardView>
+
+        <!-- Category name + description -->
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Lương"
-            android:textColor="@color/text_primary"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:layout_marginStart="12dp" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvTotal"
+            <TextView
+                android:id="@+id/tvCategoryName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lương"
+                android:textColor="@color/text_primary"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Thu nhập tháng này"
+                android:textColor="@color/text_secondary"
+                android:fontFamily="sans-serif"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp" />
+        </LinearLayout>
+
+        <!-- Amount -->
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+ 10.000.000đ"
-            android:textColor="@color/income_green"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:layout_marginEnd="12dp" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
-        <ImageButton
-            android:id="@+id/btnOptions"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_menu_more"
-            android:tint="@color/text_secondary" />
+            <TextView
+                android:id="@+id/tvTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+10.000.000đ"
+                android:textColor="#059669"
+                android:textStyle="bold"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/btnOptions"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_chevron_right"
+                app:tint="@color/text_secondary" />
+        </LinearLayout>
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+</com.google.android.material.card.MaterialCardView>

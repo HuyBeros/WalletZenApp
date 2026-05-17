@@ -14,7 +14,7 @@ public class RetrofitClient {
      * - Thiết bị thật (cùng WiFi): http://192.168.x.x:8080/  (thay IP máy tính)
      * - Server thật: https://your-domain.com/
      */
-    private static final String BASE_URL = "http://192.168.0.103:8080/";
+    private static final String BASE_URL = "https://personal-finance-backend-app.onrender.com/";
 
     private static Retrofit retrofit;
 

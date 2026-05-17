@@ -27,7 +27,7 @@ public class StatisticsActivity extends AppCompatActivity {
 
     private BarChart barChart;
     private PieChart pieChart;
-    private TextView tvIncomeMonth, tvExpenseMonth, tvBalanceMonth;
+    private TextView tvIncomeMonth, tvExpenseMonth;
     private SessionManager session;
 
     @Override
@@ -41,7 +41,6 @@ public class StatisticsActivity extends AppCompatActivity {
         pieChart = findViewById(R.id.pieChart);
         tvIncomeMonth = findViewById(R.id.tvIncomeMonth);
         tvExpenseMonth = findViewById(R.id.tvExpenseMonth);
-        tvBalanceMonth = findViewById(R.id.tvBalanceMonth);
 
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
 
@@ -51,27 +50,34 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     private void loadMonthStats() {
-        String month = new SimpleDateFormat("yyyy-MM", Locale.getDefault()).format(new Date());
         RetrofitClient.getApiService()
-                .getBalanceByMonth(session.getUserId(), month)
-                .enqueue(new Callback<Map<String, Double>>() {
+                .getTransactions(session.getUserId())
+                .enqueue(new Callback<List<com.example.walletzen.model.Transaction>>() {
                     @Override
-                    public void onResponse(Call<Map<String, Double>> call,
-                                           Response<Map<String, Double>> response) {
+                    public void onResponse(Call<List<com.example.walletzen.model.Transaction>> call,
+                                           Response<List<com.example.walletzen.model.Transaction>> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            Map<String, Double> d = response.body();
-                            double income = getOrDefault(d, "income", 0.0);
-                            double expense = getOrDefault(d, "expense", 0.0);
-                            double balance = getOrDefault(d, "balance", income - expense);
+                            String currentMonth = new java.text.SimpleDateFormat("yyyy-MM",
+                                    java.util.Locale.getDefault()).format(new java.util.Date());
+                            double income = 0, expense = 0;
+                            for (com.example.walletzen.model.Transaction t : response.body()) {
+                                String date = t.getDate();
+                                if (date != null && date.startsWith(currentMonth)) {
+                                    double amt = t.getAmount() != null ? Math.abs(t.getAmount()) : 0;
+                                    if ("THU".equals(t.getType()))      income  += amt;
+                                    else if ("CHI".equals(t.getType())) expense += amt;
+                                }
+                            }
+                            double balance = income - expense;
                             tvIncomeMonth.setText("+" + formatMoney(income));
                             tvExpenseMonth.setText("-" + formatMoney(expense));
-                            tvBalanceMonth.setText(formatMoney(balance));
                         }
                     }
                     @Override
-                    public void onFailure(Call<Map<String, Double>> call, Throwable t) {}
+                    public void onFailure(Call<List<com.example.walletzen.model.Transaction>> call, Throwable t) {}
                 });
     }
+
 
     private void loadSpendingByCategory() {
         RetrofitClient.getApiService()
@@ -172,6 +178,20 @@ public class StatisticsActivity extends AppCompatActivity {
 
     private double getOrDefault(Map<String, Double> m, String k, double d) {
         Double v = m.get(k); return v != null ? v : d;
+    }
+
+    /** Try multiple key names, return first non-zero value found */
+    private double getFirstNonZero(Map<String, Double> m, String... keys) {
+        for (String k : keys) {
+            Double v = m.get(k);
+            if (v != null && v != 0) return v;
+        }
+        // Return first non-null even if 0
+        for (String k : keys) {
+            Double v = m.get(k);
+            if (v != null) return v;
+        }
+        return 0.0;
     }
 
     private double getDouble(Map<String, Object> m, String key) {

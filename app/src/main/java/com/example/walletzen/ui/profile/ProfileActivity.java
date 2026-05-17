@@ -175,6 +175,11 @@ public class ProfileActivity extends AppCompatActivity {
                 return true;
             } else if (id == R.id.nav_statistics) {
                 startActivity(new Intent(this, com.example.walletzen.ui.statistics.StatisticsActivity.class));
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                return true;
+            } else if (id == R.id.nav_budget) {
+                startActivity(new Intent(this, com.example.walletzen.ui.budget.BudgetActivity.class));
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 return true;
             } else if (id == R.id.nav_profile) {
                 return true;

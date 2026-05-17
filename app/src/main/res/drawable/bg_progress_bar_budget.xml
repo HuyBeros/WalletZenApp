@@ -13,7 +13,7 @@
         <clip>
             <shape>
                 <corners android:radius="8dp"/>
-                <solid android:color="#F44336"/> <!-- Màu đỏ hoặc màu theo primary color -->
+                <solid android:color="@color/primary"/> <!-- Màu đỏ hoặc màu theo primary color -->
             </shape>
         </clip>
     </item>

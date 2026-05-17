@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Primary Blue Gradient Colors -->
-    <color name="primary">#378ADD</color>
-    <color name="primary_dark">#1B5D96</color>
-    <color name="primary_light">#78B1E1</color>
-    <color name="accent_blue">#2167C4</color>
+    <!-- Primary Blue Colors (Zenith Finance) -->
+    <color name="primary">#1E40AF</color>
+    <color name="primary_dark">#173082</color>
+    <color name="primary_light">#3B82F6</color>
+    <color name="accent_blue">#2563EB</color>
 
     <!-- Gradient Start/End -->
-    <color name="gradient_start">#5FA3E1</color>
-    <color name="gradient_end">#246599</color>
-    <color name="gradient_mid">#378ADD</color>
+    <color name="gradient_start">#3B82F6</color>
+    <color name="gradient_end">#1E40AF</color>
+    <color name="gradient_mid">#2563EB</color>
 
     <!-- Income/Expense Colors -->
-    <color name="income_green">#4CAF50</color>
-    <color name="expense_red">#F44336</color>
+    <color name="income_green">#22C55E</color>
+    <color name="expense_red">#EF4444</color>
 
     <!-- Background -->
-    <color name="background">#F8F9FA</color>
+    <color name="background">#F7F9FB</color>
     <color name="surface">#FFFFFF</color>
     <color name="card_bg">#FFFFFF</color>
 
@@ -27,26 +27,26 @@
     <color name="text_white">#FFFFFF</color>
 
     <!-- Divider & Border -->
-    <color name="divider">#F0F0F0</color>
+    <color name="divider">#F3F4F6</color>
     <color name="border">#E5E7EB</color>
 
     <!-- Category Icon Backgrounds -->
-    <color name="cat_food">#FFE0E6</color>
-    <color name="cat_transport">#E0F2FF</color>
-    <color name="cat_shopping">#F3E5FF</color>
-    <color name="cat_health">#E8F5E9</color>
-    <color name="cat_entertainment">#FFF3E0</color>
-    <color name="cat_salary">#E8F5E9</color>
-    <color name="cat_other">#F5F5F5</color>
+    <color name="cat_food">#FFE4E6</color>
+    <color name="cat_transport">#E0F2FE</color>
+    <color name="cat_shopping">#F3E8FF</color>
+    <color name="cat_health">#DCFCE7</color>
+    <color name="cat_entertainment">#FFEDD5</color>
+    <color name="cat_salary">#DCFCE7</color>
+    <color name="cat_other">#F3F4F6</color>
 
     <!-- Status Bar -->
-    <color name="status_bar">#1B5D96</color>
+    <color name="status_bar">#1E40AF</color>
 
     <!-- Shadow -->
-    <color name="shadow">#1A378ADD</color>
-    <color name="card_shadow">#14000000</color>
+    <color name="shadow">#1A1E40AF</color>
+    <color name="card_shadow">#0A000000</color>
 
     <!-- Bottom Nav -->
-    <color name="bottom_nav_selected">#378ADD</color>
-    <color name="bottom_nav_unselected">#B0BEC5</color>
+    <color name="bottom_nav_selected">#1E40AF</color>
+    <color name="bottom_nav_unselected">#9CA3AF</color>
 </resources>

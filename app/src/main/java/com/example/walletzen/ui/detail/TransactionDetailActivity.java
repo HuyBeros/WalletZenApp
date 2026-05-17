@@ -21,7 +21,7 @@ import retrofit2.Response;
 
 public class TransactionDetailActivity extends AppCompatActivity {
 
-    private TextView tvIcon, tvCategory, tvAmount, tvDate, tvNote, tvType;
+    private TextView tvIcon, tvCategory, tvAmount, tvDate, tvNote;
     private MaterialButton btnDelete;
     private ImageView btnBack;
     private SessionManager session;
@@ -38,7 +38,7 @@ public class TransactionDetailActivity extends AppCompatActivity {
         tvAmount = findViewById(R.id.tvDetailAmount);
         tvDate = findViewById(R.id.tvDetailDate);
         tvNote = findViewById(R.id.tvDetailNote);
-        tvType = findViewById(R.id.tvDetailType);
+        // tvType removed
         btnDelete = findViewById(R.id.btnDelete);
         btnBack = findViewById(R.id.btnBack);
 
@@ -58,7 +58,7 @@ public class TransactionDetailActivity extends AppCompatActivity {
         tvCategory.setText(category != null ? category : "Khác");
         tvNote.setText(note != null && !note.isEmpty() ? note : "Không có ghi chú");
         tvDate.setText(date != null ? date : "");
-        tvType.setText("CHI".equals(type) ? "Chi tiêu" : "Thu nhập");
+        // tvType removed
 
         // Format amount
         String formattedAmount = String.format("%,.0f ₫", Math.abs(amount)).replace(",", ".");
