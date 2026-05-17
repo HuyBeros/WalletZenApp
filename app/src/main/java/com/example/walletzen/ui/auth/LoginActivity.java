@@ -167,7 +167,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void sendGoogleTokenToBackend(String idToken) {
         Map<String, String> payload = new HashMap<>();
-        payload.put("idToken", idToken);
+        payload.put("token", idToken);
 
         RetrofitClient.getApiService().loginWithGoogle(payload).enqueue(new Callback<User>() {
             @Override

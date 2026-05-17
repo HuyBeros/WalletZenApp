@@ -43,7 +43,6 @@ public class BudgetFragment extends Fragment {
     private BudgetAdapter adapter;
     private List<BudgetItem> list;
     private SessionManager session;
-    private java.util.Set<String> deletedFallbackCategories = new java.util.HashSet<>();
 
     public static BudgetFragment newInstance(boolean isExpense) {
         BudgetFragment fragment = new BudgetFragment();
@@ -110,11 +109,6 @@ public class BudgetFragment extends Fragment {
             public void onEditClick(BudgetItem item) {
                 showEditLimitDialog(item);
             }
-
-            @Override
-            public void onDeleteClick(BudgetItem item) {
-                showDeleteBudgetConfirm(item);
-            }
         });
         rvBudget.setLayoutManager(new LinearLayoutManager(requireContext()));
         rvBudget.setAdapter(adapter);
@@ -172,34 +166,30 @@ public class BudgetFragment extends Fragment {
                                                 
                                                 list.clear();
                                                 java.util.Set<String> seenCategories = new java.util.HashSet<>();
-                                                // Map actual budgets set on backend
+                                                // 1. Map actual budgets set on backend exactly as returned by API
                                                 for (com.example.walletzen.model.Budget b : serverBudgets) {
                                                     if (b.getMonth() != null && b.getMonth().equals(currentMonth)) {
                                                         if (b.getCategory() != null && "CHI".equals(b.getCategory().getType())) {
                                                             String catName = b.getCategory().getCategoryName();
-                                                            if (deletedFallbackCategories.contains(catName)) continue;
-                                                            if (seenCategories.contains(catName)) continue;
+                                                            if (seenCategories.contains(catName)) continue; // Deduplicate
                                                             seenCategories.add(catName);
                                                             
                                                             double spent = spentMap.getOrDefault(catName, 0.0);
                                                             double limit = b.getCategoryLimit() != null ? b.getCategoryLimit() : 0.0;
                                                             list.add(new BudgetItem(catName, "💸", spent, limit, true, b.getBudgetId(), b.getCategory().getCategoryId()));
+                                                            
+                                                            spentMap.remove(catName); // Processed
                                                         }
                                                     }
                                                 }
                                                 
-                                                // Fallback to transaction-based if no budgets are set
-                                                if (list.isEmpty()) {
-                                                    for (Map.Entry<String, Double> entry : spentMap.entrySet()) {
-                                                        String catName = entry.getKey();
-                                                        if (deletedFallbackCategories.contains(catName)) continue;
-                                                        double spent = entry.getValue();
-                                                        if (spent > 0) {
-                                                            double limit = Math.ceil(spent / 1_000_000.0) * 1_000_000;
-                                                            if (limit <= spent) limit += 1_000_000;
-                                                            Long catId = categoryIdMap.get(entry.getKey());
-                                                            list.add(new BudgetItem(entry.getKey(), "💸", spent, limit, true, null, catId));
-                                                        }
+                                                // 2. Map remaining transactions that don't have a budget set (Limit = 0)
+                                                for (Map.Entry<String, Double> entry : spentMap.entrySet()) {
+                                                    String catName = entry.getKey();
+                                                    double spent = entry.getValue();
+                                                    if (spent > 0) {
+                                                        Long catId = categoryIdMap.get(catName);
+                                                        list.add(new BudgetItem(catName, "💸", spent, 0.0, true, null, catId));
                                                     }
                                                 }
                                                 
@@ -275,28 +265,29 @@ public class BudgetFragment extends Fragment {
                                                 
                                                 list.clear();
                                                 java.util.Set<String> seenCategories = new java.util.HashSet<>();
-                                                // Map actual budgets set on backend
+                                                // 1. Map actual budgets set on backend exactly as returned by API
                                                 for (com.example.walletzen.model.Budget b : serverBudgets) {
                                                     if (b.getMonth() != null && b.getMonth().equals(currentMonth)) {
                                                         if (b.getCategory() != null && "THU".equals(b.getCategory().getType())) {
                                                             String catName = b.getCategory().getCategoryName();
-                                                            if (deletedFallbackCategories.contains(catName)) continue;
-                                                            if (seenCategories.contains(catName)) continue;
+                                                            if (seenCategories.contains(catName)) continue; // Deduplicate
                                                             seenCategories.add(catName);
                                                             
                                                             double spent = spentMap.getOrDefault(catName, 0.0);
                                                             list.add(new BudgetItem(catName, "💰", spent, 0, false, b.getBudgetId(), b.getCategory().getCategoryId()));
+                                                            
+                                                            spentMap.remove(catName); // Processed
                                                         }
                                                     }
                                                 }
                                                 
-                                                // Fallback to transaction-based if no budgets are set
-                                                if (list.isEmpty()) {
-                                                    for (Map.Entry<String, Double> entry : spentMap.entrySet()) {
-                                                        String catName = entry.getKey();
-                                                        if (deletedFallbackCategories.contains(catName)) continue;
-                                                        Long catId = categoryIdMap.get(entry.getKey());
-                                                        list.add(new BudgetItem(entry.getKey(), "💰", entry.getValue(), 0, false, null, catId));
+                                                // 2. Map remaining transactions that don't have a budget set
+                                                for (Map.Entry<String, Double> entry : spentMap.entrySet()) {
+                                                    String catName = entry.getKey();
+                                                    double spent = entry.getValue();
+                                                    if (spent > 0) {
+                                                        Long catId = categoryIdMap.get(catName);
+                                                        list.add(new BudgetItem(catName, "💰", spent, 0, false, null, catId));
                                                     }
                                                 }
                                                 
@@ -422,59 +413,4 @@ public class BudgetFragment extends Fragment {
             }
         });
     }
-
-    private void showDeleteBudgetConfirm(BudgetItem item) {
-        if (item.getBudgetId() == null) {
-            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                    .setTitle("Xóa ngân sách")
-                    .setMessage("Bạn có chắc chắn muốn xóa ngân sách cho danh mục " + item.getCategoryName() + "?")
-                    .setPositiveButton("XÓA", (dialog, which) -> {
-                        deletedFallbackCategories.add(item.getCategoryName());
-                        Toast.makeText(requireContext(), "Đã xóa ngân sách!", Toast.LENGTH_SHORT).show();
-                        loadBudgetData();
-                    })
-                    .setNegativeButton("HỦY", null)
-                    .show();
-            return;
-        }
-        
-        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setTitle("Xóa ngân sách")
-                .setMessage("Bạn có chắc chắn muốn xóa ngân sách cho danh mục " + item.getCategoryName() + "?")
-                .setPositiveButton("XÓA", (dialog, which) -> deleteBudgetOnServer(item))
-                .setNegativeButton("HỦY", null)
-                .show();
-    }
-
-private void deleteBudgetOnServer(BudgetItem item) {
-    progressLoading.setVisibility(View.VISIBLE);
-    RetrofitClient.getApiService().deleteBudget(item.getBudgetId())
-        .enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (!isAdded()) return;
-                progressLoading.setVisibility(View.GONE);
-                
-                // 1. If Render successfully deletes OR returns 404 (because deploy hasn't finished yet)
-                if (response.isSuccessful() || response.code() == 404) {
-                    // Instantly hide it from the UI so it never reappears on reload
-                    deletedFallbackCategories.add(item.getCategoryName());
-                    Toast.makeText(requireContext(), "Đã xóa ngân sách!", Toast.LENGTH_SHORT).show();
-                    loadBudgetData(); 
-                } else {
-                    Toast.makeText(requireContext(), "Xóa thất bại! Mã lỗi: " + response.code(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                if (!isAdded()) return;
-                progressLoading.setVisibility(View.GONE);
-                // 2. Even on connection failures, hide it locally for a perfectly smooth UX!
-                deletedFallbackCategories.add(item.getCategoryName());
-                Toast.makeText(requireContext(), "Đã xóa ngân sách!", Toast.LENGTH_SHORT).show();
-                loadBudgetData();
-            }
-        });
-}
 }

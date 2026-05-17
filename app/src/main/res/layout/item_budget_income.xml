@@ -84,15 +84,6 @@
                     android:background="?attr/selectableItemBackgroundBorderless"
                     app:tint="#64748B" />
 
-                <ImageView
-                    android:id="@+id/btnDeleteBudget"
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:src="@drawable/delete"
-                    android:padding="8dp"
-                    android:layout_marginStart="4dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    app:tint="#EF4444" />
             </LinearLayout>
         </LinearLayout>
 

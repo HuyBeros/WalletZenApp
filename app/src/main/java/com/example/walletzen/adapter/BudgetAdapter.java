@@ -24,7 +24,6 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public interface OnBudgetClickListener {
         void onEditClick(BudgetItem item);
-        void onDeleteClick(BudgetItem item);
     }
 
     private Context context;
@@ -113,12 +112,6 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 }
             });
 
-            eh.btnDeleteBudget.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onDeleteClick(item);
-                }
-            });
-
         } else if (holder instanceof IncomeViewHolder) {
             IncomeViewHolder ih = (IncomeViewHolder) holder;
             ih.tvCategoryName.setText(catName);
@@ -143,12 +136,6 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     listener.onEditClick(item);
                 }
             });
-
-            ih.btnDeleteBudget.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onDeleteClick(item);
-                }
-            });
         }
     }
 
@@ -164,7 +151,7 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     static class ExpenseViewHolder extends RecyclerView.ViewHolder {
         TextView tvCategoryName, tvRemainingAmount, tvSpentAmount, tvLimitAmount;
         ProgressBar progressBudget;
-        ImageView ivIconBudget, btnEditBudget, btnDeleteBudget;
+        ImageView ivIconBudget, btnEditBudget;
 
         public ExpenseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -175,13 +162,12 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             progressBudget = itemView.findViewById(R.id.progressBudget);
             ivIconBudget = itemView.findViewById(R.id.ivIconBudget);
             btnEditBudget = itemView.findViewById(R.id.btnEditBudget);
-            btnDeleteBudget = itemView.findViewById(R.id.btnDeleteBudget);
         }
     }
 
     static class IncomeViewHolder extends RecyclerView.ViewHolder {
         TextView tvCategoryName, tvLimitAmount, tvTotal;
-        ImageView ivIconBudget, btnEditBudget, btnDeleteBudget;
+        ImageView ivIconBudget, btnEditBudget;
         View layoutIncomeAmountRow;
 
         public IncomeViewHolder(@NonNull View itemView) {
@@ -191,7 +177,6 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             tvTotal = itemView.findViewById(R.id.tvTotal);
             ivIconBudget = itemView.findViewById(R.id.ivIconBudget);
             btnEditBudget = itemView.findViewById(R.id.btnEditBudget);
-            btnDeleteBudget = itemView.findViewById(R.id.btnDeleteBudget);
             layoutIncomeAmountRow = itemView.findViewById(R.id.layoutIncomeAmountRow);
         }
     }
