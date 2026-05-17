@@ -57,7 +57,21 @@ public class TransactionDetailActivity extends AppCompatActivity {
         tvIcon.setText(icon != null ? icon : "💰");
         tvCategory.setText(category != null ? category : "Khác");
         tvNote.setText(note != null && !note.isEmpty() ? note : "Không có ghi chú");
-        tvDate.setText(date != null ? date : "");
+        String formattedDate = date;
+        if (date != null && date.contains("T")) {
+            try {
+                String[] parts = date.split("T");
+                String[] dateSplit = parts[0].split("-");
+                String[] timeSplit = parts[1].split(":");
+                formattedDate = timeSplit[0] + ":" + timeSplit[1] + " " + dateSplit[2] + "/" + dateSplit[1] + "/" + dateSplit[0];
+            } catch (Exception e) {}
+        } else if (date != null && date.contains("-")) {
+            try {
+                String[] dateSplit = date.split("-");
+                formattedDate = dateSplit[2] + "/" + dateSplit[1] + "/" + dateSplit[0];
+            } catch (Exception e) {}
+        }
+        tvDate.setText(formattedDate != null ? formattedDate : "");
         // tvType removed
 
         // Format amount

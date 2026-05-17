@@ -127,8 +127,9 @@ public class AddTransactionActivity extends AppCompatActivity {
         String amountStr = edtAmount.getText().toString().trim();
         String note      = edtNote.getText().toString().trim();
         Calendar cal = Calendar.getInstance();
-        String date = String.format(Locale.getDefault(), "%04d-%02d-%02d",
-                cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH));
+        String date = String.format(Locale.getDefault(), "%04d-%02d-%02dT%02d:%02d:%02d",
+                cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH),
+                cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), cal.get(Calendar.SECOND));
 
         if (TextUtils.isEmpty(amountStr)) {
             edtAmount.setError("Nhập số tiền");

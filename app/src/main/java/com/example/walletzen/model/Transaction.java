@@ -75,4 +75,25 @@ public class Transaction {
         if (category != null) return category.getIcon();
         return "💰";
     }
+
+    public String getFormattedDate() {
+        if (date == null || date.isEmpty()) return "";
+        try {
+            if (date.contains("T")) {
+                String[] parts = date.split("T");
+                String datePart = parts[0]; // "yyyy-MM-dd"
+                String timePart = parts[1]; // "HH:mm:ss"
+                
+                String[] dateSplit = datePart.split("-"); // ["yyyy", "MM", "dd"]
+                String[] timeSplit = timePart.split(":"); // ["HH", "mm", "ss"]
+                
+                return timeSplit[0] + ":" + timeSplit[1] + " " + dateSplit[2] + "/" + dateSplit[1] + "/" + dateSplit[0];
+            } else {
+                String[] dateSplit = date.split("-");
+                return dateSplit[2] + "/" + dateSplit[1] + "/" + dateSplit[0];
+            }
+        } catch (Exception e) {
+            return date;
+        }
+    }
 }

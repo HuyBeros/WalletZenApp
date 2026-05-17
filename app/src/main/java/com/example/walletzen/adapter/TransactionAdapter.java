@@ -59,7 +59,7 @@ public class TransactionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         String catName = t.getCategoryName() != null ? t.getCategoryName() : "Khác";
         String note = t.getNote() != null && !t.getNote().isEmpty() ? t.getNote() : catName;
-        String date = t.getDate() != null ? t.getDate() : "";
+        String date = t.getFormattedDate();
 
         // Determine icon and colors
         int iconRes = R.drawable.ic_payments;
