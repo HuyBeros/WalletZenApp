@@ -91,6 +91,12 @@ public interface ApiService {
     @POST("api/categories")
     Call<Category> createCategory(@Body Category category);
 
+    @PUT("api/categories/{id}")
+    Call<Category> updateCategory(@Path("id") Long id, @Body Category category);
+
+    @DELETE("api/categories/{id}")
+    Call<Void> deleteCategory(@Path("id") Long id);
+
     // ============ DASHBOARD ============
 
     // GET /api/dashboard/balance?userId=1

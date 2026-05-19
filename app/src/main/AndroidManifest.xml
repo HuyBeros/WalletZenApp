@@ -51,6 +51,9 @@
         <!-- PROFILE -->
         <activity android:name=".ui.profile.ProfileActivity" android:exported="false" />
 
+        <!-- CATEGORY MANAGEMENT -->
+        <activity android:name=".ui.category.CategoryManageActivity" android:exported="false" />
+
     </application>
 
 </manifest>

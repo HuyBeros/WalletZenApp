@@ -47,6 +47,10 @@ public class BudgetActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
+
+        // Category shortcut chip
+        findViewById(R.id.btnManageCategoriesShortcut).setOnClickListener(v ->
+            startActivity(new Intent(this, com.example.walletzen.ui.category.CategoryManageActivity.class)));
     }
 
     @Override

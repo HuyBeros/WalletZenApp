@@ -17,30 +17,25 @@
         android:orientation="vertical"
         android:padding="14dp">
 
-        <!-- Row 1: Icon + Name + Badges + Edit Action -->
+        <!-- Row 1: Icon + Name + Type badge + Actions -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-            <!-- Category Icon Container -->
-            <LinearLayout
+            <!-- Emoji Icon Circle -->
+            <TextView
+                android:id="@+id/tvCatIcon"
                 android:layout_width="44dp"
                 android:layout_height="44dp"
+                android:gravity="center"
+                android:textSize="20sp"
                 android:background="@drawable/bg_icon_circle"
                 android:backgroundTint="#F1F5F9"
-                android:gravity="center">
+                android:text="💰" />
 
-                <ImageView
-                    android:id="@+id/ivIconBudget"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:src="@drawable/ic_food"
-                    app:tint="#378ADD" />
-            </LinearLayout>
-
-            <!-- Name + Badges -->
+            <!-- Name + Type badge -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -49,7 +44,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvCategoryName"
+                    android:id="@+id/tvCatName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ăn uống"
@@ -64,7 +59,7 @@
                     android:gravity="center_vertical"
                     android:layout_marginTop="4dp">
 
-                    <!-- Type badge (CHI TIÊU) -->
+                    <!-- Type badge (CHI/THU) -->
                     <TextView
                         android:id="@+id/tvCatType"
                         android:layout_width="wrap_content"
@@ -82,22 +77,23 @@
                         android:id="@+id/tvBudgetStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="✅ Ổn (0%)"
+                        android:text="✅ Ổn"
                         android:textSize="10sp"
                         android:textStyle="bold"
                         android:textColor="#059669"
                         android:paddingHorizontal="8dp"
                         android:paddingVertical="2dp"
                         android:layout_marginStart="6dp"
-                        android:background="@drawable/bg_badge_green" />
+                        android:background="@drawable/bg_badge_green"
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
-            <!-- Edit Action (Only) -->
+            <!-- Action buttons -->
             <ImageView
-                android:id="@+id/btnEditBudget"
+                android:id="@+id/btnEditCategory"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:src="@drawable/edit"
@@ -105,14 +101,25 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:tint="#378ADD" />
 
+            <ImageView
+                android:id="@+id/btnDeleteCategory"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/delete"
+                android:padding="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="#EF4444" />
+
         </LinearLayout>
 
-        <!-- Row 2: Spent / Limit info -->
+        <!-- Row 2: Budget info (only for CHI / expense categories) -->
         <LinearLayout
+            android:id="@+id/layoutBudgetInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="12dp">
+            android:layout_marginTop="12dp"
+            android:visibility="gone">
 
             <!-- Spending / Limit row -->
             <RelativeLayout
@@ -120,16 +127,16 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/tvSpentAmount"
+                    android:id="@+id/tvSpent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Đã chi: 0đ"
+                    android:text="Đã dùng: 0đ"
                     android:textSize="12sp"
                     android:textColor="#64748B"
                     android:layout_alignParentStart="true" />
 
                 <TextView
-                    android:id="@+id/tvLimitAmount"
+                    android:id="@+id/tvLimit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Hạn mức: Chưa đặt"
@@ -148,6 +155,8 @@
                 android:progress="0"
                 android:progressDrawable="@drawable/bg_progress_bar_budget"
                 android:layout_marginTop="6dp" />
+
+
 
         </LinearLayout>
 

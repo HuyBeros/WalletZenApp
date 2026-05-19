@@ -87,6 +87,10 @@ public class Transaction {
                 String[] dateSplit = datePart.split("-"); // ["yyyy", "MM", "dd"]
                 String[] timeSplit = timePart.split(":"); // ["HH", "mm", "ss"]
                 
+                // Hide time if it is exactly 00:00:00 (due to old backend bug)
+                if (timeSplit.length >= 2 && "00".equals(timeSplit[0]) && "00".equals(timeSplit[1])) {
+                    return dateSplit[2] + "/" + dateSplit[1] + "/" + dateSplit[0];
+                }
                 return timeSplit[0] + ":" + timeSplit[1] + " " + dateSplit[2] + "/" + dateSplit[1] + "/" + dateSplit[0];
             } else {
                 String[] dateSplit = date.split("-");

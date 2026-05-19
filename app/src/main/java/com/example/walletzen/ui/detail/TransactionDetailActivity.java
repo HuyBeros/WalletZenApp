@@ -64,7 +64,12 @@ public class TransactionDetailActivity extends AppCompatActivity {
                 String[] parts = date.split("T");
                 String[] dateSplit = parts[0].split("-");
                 String[] timeSplit = parts[1].split(":");
-                formattedDate = timeSplit[0] + ":" + timeSplit[1] + " " + dateSplit[2] + "/" + dateSplit[1] + "/" + dateSplit[0];
+                // Ẩn giờ nếu là 00:00 (lỗi backend cũ cắt mất giờ)
+                if (timeSplit.length >= 2 && "00".equals(timeSplit[0]) && "00".equals(timeSplit[1])) {
+                    formattedDate = dateSplit[2] + "/" + dateSplit[1] + "/" + dateSplit[0];
+                } else {
+                    formattedDate = timeSplit[0] + ":" + timeSplit[1] + " " + dateSplit[2] + "/" + dateSplit[1] + "/" + dateSplit[0];
+                }
             } catch (Exception e) {}
         } else if (date != null && date.contains("-")) {
             try {

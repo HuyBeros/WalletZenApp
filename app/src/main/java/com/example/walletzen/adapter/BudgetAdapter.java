@@ -86,24 +86,36 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ((View) eh.ivIconBudget.getParent()).setBackgroundTintList(
                     android.content.res.ColorStateList.valueOf(bgTint));
             
-            double remaining = item.getLimitAmount() - item.getCurrentAmount();
-            if (remaining < 0) remaining = 0;
-            eh.tvRemainingAmount.setText("Còn lại " + formatMoney(remaining));
-            
-            eh.tvSpentAmount.setText(formatMoney(item.getCurrentAmount()));
-            eh.tvLimitAmount.setText("Giới hạn: " + formatMoney(item.getLimitAmount()));
-            
-            int percent = item.getLimitAmount() > 0 ? 
-                    (int) ((item.getCurrentAmount() / item.getLimitAmount()) * 100) : 100;
-            if (percent > 100) percent = 100;
-            eh.progressBudget.setProgress(percent);
-            
-            // Red bar if limit exceeded
-            if (percent >= 100) {
-                eh.tvRemainingAmount.setTextColor(Color.parseColor("#EF4444"));
-                eh.tvRemainingAmount.setText("Vượt giới hạn!");
+            eh.tvSpentAmount.setText("Đã chi: " + formatMoney(item.getCurrentAmount()));
+
+            if (item.getLimitAmount() > 0) {
+                eh.tvLimitAmount.setText("Hạn mức: " + formatMoney(item.getLimitAmount()));
+                
+                int percent = (int) ((item.getCurrentAmount() / item.getLimitAmount()) * 100);
+                if (percent > 100) percent = 100;
+                eh.progressBudget.setProgress(percent);
+                eh.progressBudget.setVisibility(View.VISIBLE);
+                
+                // Status badge
+                eh.tvBudgetStatus.setVisibility(View.VISIBLE);
+                if (percent >= 100) {
+                    eh.tvBudgetStatus.setText("🔴 Vượt giới hạn!");
+                    eh.tvBudgetStatus.setTextColor(Color.parseColor("#EF4444"));
+                    eh.tvBudgetStatus.setBackgroundResource(R.drawable.bg_badge_red);
+                } else if (percent >= 80) {
+                    eh.tvBudgetStatus.setText("⚠️ Sắp chạm (" + percent + "%)");
+                    eh.tvBudgetStatus.setTextColor(Color.parseColor("#D97706"));
+                    eh.tvBudgetStatus.setBackgroundResource(R.drawable.bg_badge_yellow);
+                } else {
+                    eh.tvBudgetStatus.setText("✅ Ổn (" + percent + "%)");
+                    eh.tvBudgetStatus.setTextColor(Color.parseColor("#059669"));
+                    eh.tvBudgetStatus.setBackgroundResource(R.drawable.bg_badge_green);
+                }
             } else {
-                eh.tvRemainingAmount.setTextColor(Color.parseColor("#059669"));
+                eh.tvLimitAmount.setText("Hạn mức: Chưa đặt");
+                eh.progressBudget.setProgress(0);
+                eh.progressBudget.setVisibility(View.GONE);
+                eh.tvBudgetStatus.setVisibility(View.GONE);
             }
 
             eh.btnEditBudget.setOnClickListener(v -> {
@@ -149,16 +161,16 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     static class ExpenseViewHolder extends RecyclerView.ViewHolder {
-        TextView tvCategoryName, tvRemainingAmount, tvSpentAmount, tvLimitAmount;
+        TextView tvCategoryName, tvSpentAmount, tvLimitAmount, tvBudgetStatus;
         ProgressBar progressBudget;
         ImageView ivIconBudget, btnEditBudget;
 
         public ExpenseViewHolder(@NonNull View itemView) {
             super(itemView);
             tvCategoryName = itemView.findViewById(R.id.tvCategoryName);
-            tvRemainingAmount = itemView.findViewById(R.id.tvRemainingAmount);
             tvSpentAmount = itemView.findViewById(R.id.tvSpentAmount);
             tvLimitAmount = itemView.findViewById(R.id.tvLimitAmount);
+            tvBudgetStatus = itemView.findViewById(R.id.tvBudgetStatus);
             progressBudget = itemView.findViewById(R.id.progressBudget);
             ivIconBudget = itemView.findViewById(R.id.ivIconBudget);
             btnEditBudget = itemView.findViewById(R.id.btnEditBudget);

@@ -27,7 +27,7 @@
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
                 android:paddingTop="16dp"
-                android:paddingBottom="12dp">
+                android:paddingBottom="8dp">
 
                 <LinearLayout
                     android:id="@+id/btnBack"
@@ -53,6 +53,36 @@
                     android:fontFamily="sans-serif-medium"
                     android:textStyle="bold"
                     android:textColor="@color/text_primary" />
+
+                <!-- Category manage shortcut chip -->
+                <LinearLayout
+                    android:id="@+id/btnManageCategoriesShortcut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_badge_blue"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="12dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:src="@drawable/categorie"
+                        app:tint="#378ADD" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Danh mục"
+                        android:textColor="#378ADD"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:layout_marginStart="4dp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

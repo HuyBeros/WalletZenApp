@@ -331,6 +331,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+
             <!-- LOGOUT BUTTON -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLogout"
@@ -340,7 +341,7 @@
                 android:layout_below="@id/cardChangePassword"
                 android:layout_marginHorizontal="16dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="32dp"
                 android:text="Đăng xuất"
                 android:textColor="#C53030"
