@@ -92,10 +92,10 @@ public interface ApiService {
     Call<Category> createCategory(@Body Category category);
 
     @PUT("api/categories/{id}")
-    Call<Category> updateCategory(@Path("id") Long id, @Body Category category);
+    Call<Category> updateCategory(@Path("id") Long id, @Query("userId") Long userId, @Body Category category);
 
     @DELETE("api/categories/{id}")
-    Call<Void> deleteCategory(@Path("id") Long id);
+    Call<String> deleteCategory(@Path("id") Long id, @Query("userId") Long userId);
 
     // ============ DASHBOARD ============
 

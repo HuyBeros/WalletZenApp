@@ -24,6 +24,8 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public interface OnBudgetClickListener {
         void onEditClick(BudgetItem item);
+        void onDeleteClick(BudgetItem item);
+        void onEditNameClick(BudgetItem item);
     }
 
     private Context context;
@@ -119,9 +121,10 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             }
 
             eh.btnEditBudget.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onEditClick(item);
-                }
+                if (listener != null) listener.onEditNameClick(item);
+            });
+            eh.btnDeleteBudget.setOnClickListener(v -> {
+                if (listener != null) listener.onDeleteClick(item);
             });
 
         } else if (holder instanceof IncomeViewHolder) {
@@ -132,7 +135,6 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             
             // Hide unwanted views for Income category budgets
             ih.tvLimitAmount.setVisibility(View.GONE);
-            ih.btnEditBudget.setVisibility(View.GONE);
             if (ih.layoutIncomeAmountRow != null) {
                 ih.layoutIncomeAmountRow.setVisibility(View.GONE);
             }
@@ -143,10 +145,15 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ((View) ih.ivIconBudget.getParent()).setBackgroundTintList(
                     android.content.res.ColorStateList.valueOf(bgTint));
 
+            // Show edit and delete buttons for income too
+            ih.btnEditBudget.setVisibility(View.VISIBLE);
+            ih.btnDeleteBudget.setVisibility(View.VISIBLE);
+
             ih.btnEditBudget.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onEditClick(item);
-                }
+                if (listener != null) listener.onEditNameClick(item);
+            });
+            ih.btnDeleteBudget.setOnClickListener(v -> {
+                if (listener != null) listener.onDeleteClick(item);
             });
         }
     }
@@ -163,7 +170,7 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     static class ExpenseViewHolder extends RecyclerView.ViewHolder {
         TextView tvCategoryName, tvSpentAmount, tvLimitAmount, tvBudgetStatus;
         ProgressBar progressBudget;
-        ImageView ivIconBudget, btnEditBudget;
+        ImageView ivIconBudget, btnEditBudget, btnDeleteBudget;
 
         public ExpenseViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -174,12 +181,13 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             progressBudget = itemView.findViewById(R.id.progressBudget);
             ivIconBudget = itemView.findViewById(R.id.ivIconBudget);
             btnEditBudget = itemView.findViewById(R.id.btnEditBudget);
+            btnDeleteBudget = itemView.findViewById(R.id.btnDeleteBudget);
         }
     }
 
     static class IncomeViewHolder extends RecyclerView.ViewHolder {
         TextView tvCategoryName, tvLimitAmount, tvTotal;
-        ImageView ivIconBudget, btnEditBudget;
+        ImageView ivIconBudget, btnEditBudget, btnDeleteBudget;
         View layoutIncomeAmountRow;
 
         public IncomeViewHolder(@NonNull View itemView) {
@@ -189,6 +197,7 @@ public class BudgetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             tvTotal = itemView.findViewById(R.id.tvTotal);
             ivIconBudget = itemView.findViewById(R.id.ivIconBudget);
             btnEditBudget = itemView.findViewById(R.id.btnEditBudget);
+            btnDeleteBudget = itemView.findViewById(R.id.btnDeleteBudget);
             layoutIncomeAmountRow = itemView.findViewById(R.id.layoutIncomeAmountRow);
         }
     }

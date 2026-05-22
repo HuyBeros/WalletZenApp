@@ -96,7 +96,6 @@ public class StatisticsActivity extends AppCompatActivity {
         });
 
         loadMonthStats();
-        loadSpendingByCategory();
         loadTrend();
         updateCalendarUI();
     }
@@ -134,7 +133,7 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     private void updateCalendarUI() {
-        SimpleDateFormat sdf = new SimpleDateFormat("Tháng MM, yyyy", new Locale("vi", "VN"));
+        SimpleDateFormat sdf = new SimpleDateFormat("'Tháng' MM, yyyy", new Locale("vi", "VN"));
         tvCalendarMonth.setText(sdf.format(currentCalendar.getTime()));
         
         buildCalendarDays();
@@ -220,16 +219,27 @@ public class StatisticsActivity extends AppCompatActivity {
                 java.util.Locale.getDefault()).format(currentCalendar.getTime());
         
         double income = 0, expense = 0;
+        Map<String, Double> expenseByCategory = new HashMap<>();
+
         for (com.example.walletzen.model.Transaction t : allTransactions) {
+            if (t == null) continue;
             String date = t.getDate();
             if (date != null && date.startsWith(currentMonthStr)) {
                 double amt = t.getAmount() != null ? Math.abs(t.getAmount()) : 0;
-                if ("THU".equals(t.getType()))      income  += amt;
-                else if ("CHI".equals(t.getType())) expense += amt;
+                if ("THU".equals(t.getType())) {
+                    income += amt;
+                } else if ("CHI".equals(t.getType())) {
+                    expense += amt;
+                    String catName = t.getCategoryName();
+                    double current = expenseByCategory.containsKey(catName) ? expenseByCategory.get(catName) : 0.0;
+                    expenseByCategory.put(catName, current + amt);
+                }
             }
         }
         tvIncomeMonth.setText("+" + formatMoney(income));
         tvExpenseMonth.setText("-" + formatMoney(expense));
+        
+        setupPieChart(expenseByCategory);
     }
 
     private void loadMonthStats() {
@@ -252,22 +262,7 @@ public class StatisticsActivity extends AppCompatActivity {
                 });
     }
 
-    private void loadSpendingByCategory() {
-        RetrofitClient.getApiService()
-                .getSpendingByCategory(session.getUserId())
-                .enqueue(new Callback<Map<String, Double>>() {
-                    @Override
-                    public void onResponse(Call<Map<String, Double>> call,
-                                           Response<Map<String, Double>> response) {
-                        if (response.isSuccessful() && response.body() != null
-                                && !response.body().isEmpty()) {
-                            setupPieChart(response.body());
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<Map<String, Double>> call, Throwable t) {}
-                });
-    }
+    // Removed loadSpendingByCategory() network call as it calculates locally now
 
     private void loadTrend() {
         RetrofitClient.getApiService()
@@ -286,12 +281,23 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     private void setupPieChart(Map<String, Double> data) {
+        if (data == null || data.isEmpty()) {
+            pieChart.clear();
+            return;
+        }
+
         List<PieEntry> entries = new ArrayList<>();
         for (Map.Entry<String, Double> e : data.entrySet()) {
-            if (e.getValue() > 0) {
+            if (e.getValue() != null && e.getValue() > 0) {
                 entries.add(new PieEntry(e.getValue().floatValue(), e.getKey()));
             }
         }
+        
+        if (entries.isEmpty()) {
+            pieChart.clear();
+            return;
+        }
+
         PieDataSet dataSet = new PieDataSet(entries, ""); // Blank label for legend so it doesn't duplicate
         dataSet.setColors(new int[]{
                 0xFFFF4081, 0xFF7C4DFF, 0xFF00BCD4, 0xFFFF9800, 0xFF4CAF50,
@@ -332,18 +338,23 @@ public class StatisticsActivity extends AppCompatActivity {
     }
 
     private void setupBarChart(List<Map<String, Object>> trend) {
+        if (trend == null || trend.isEmpty()) {
+            barChart.clear();
+            return;
+        }
+
         List<BarEntry> incomeEntries = new ArrayList<>();
         List<BarEntry> expenseEntries = new ArrayList<>();
         List<String> labels = new ArrayList<>();
 
         for (int i = 0; i < trend.size(); i++) {
             Map<String, Object> m = trend.get(i);
-            String month = String.valueOf(m.getOrDefault("month", ""));
+            String month = m.containsKey("month") && m.get("month") != null ? String.valueOf(m.get("month")) : "";
             double income = getDouble(m, "income");
             double expense = getDouble(m, "expense");
             incomeEntries.add(new BarEntry(i, (float) income));
             expenseEntries.add(new BarEntry(i, (float) expense));
-            labels.add(month.length() >= 7 ? month.substring(5) : month);
+            labels.add(month != null && month.length() >= 7 ? month.substring(5) : month);
         }
 
         BarDataSet incomeSet = new BarDataSet(incomeEntries, "Thu nhập");

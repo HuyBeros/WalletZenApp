@@ -376,7 +376,7 @@ public class CategoryManageActivity extends AppCompatActivity {
     private void confirmDelete(Category cat) {
         new AlertDialog.Builder(this)
                 .setTitle("Xóa danh mục")
-                .setMessage("Xóa danh mục \"" + cat.getCategoryName() + "\"?\nCác giao dịch liên quan vẫn được giữ lại.")
+                .setMessage("Xóa danh mục \"" + cat.getCategoryName() + "\"?\nChú ý: TẤT CẢ giao dịch và ngân sách liên quan đến danh mục này cũng sẽ bị xóa vĩnh viễn!")
                 .setPositiveButton("Xóa", (d, w) -> callDeleteCategory(cat.getCategoryId()))
                 .setNegativeButton("Hủy", null)
                 .show();
@@ -429,7 +429,7 @@ public class CategoryManageActivity extends AppCompatActivity {
 
     private void callUpdateCategory(Long id, Category cat) {
         showLoading(true);
-        RetrofitClient.getApiService().updateCategory(id, cat).enqueue(new Callback<Category>() {
+        RetrofitClient.getApiService().updateCategory(id, session.getUserId(), cat).enqueue(new Callback<Category>() {
             @Override
             public void onResponse(Call<Category> call, Response<Category> r) {
                 showLoading(false);
@@ -450,9 +450,9 @@ public class CategoryManageActivity extends AppCompatActivity {
 
     private void callDeleteCategory(Long id) {
         showLoading(true);
-        RetrofitClient.getApiService().deleteCategory(id).enqueue(new Callback<Void>() {
+        RetrofitClient.getApiService().deleteCategory(id, session.getUserId()).enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> r) {
+            public void onResponse(Call<String> call, Response<String> r) {
                 showLoading(false);
                 if (r.isSuccessful()) {
                     Toast.makeText(CategoryManageActivity.this, "Đã xóa danh mục!", Toast.LENGTH_SHORT).show();
@@ -462,7 +462,7 @@ public class CategoryManageActivity extends AppCompatActivity {
                 }
             }
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 showLoading(false);
                 Toast.makeText(CategoryManageActivity.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
             }

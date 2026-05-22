@@ -95,7 +95,7 @@
 
             </LinearLayout>
 
-            <!-- Edit Action (Only) -->
+            <!-- Edit + Delete Actions -->
             <ImageView
                 android:id="@+id/btnEditBudget"
                 android:layout_width="36dp"
@@ -104,6 +104,15 @@
                 android:padding="8dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 app:tint="#378ADD" />
+
+            <ImageView
+                android:id="@+id/btnDeleteBudget"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/delete"
+                android:padding="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="#EF4444" />
 
         </LinearLayout>
 
