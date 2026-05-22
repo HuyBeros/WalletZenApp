@@ -17,12 +17,9 @@
         android:paddingTop="40dp"
         android:paddingBottom="20dp">
         <!-- In the image, header is just blue. We can use primary_light or primary -->
-        <ImageView
-            android:id="@+id/btnBack"
+        <View
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            app:tint="#FFFFFF"
             android:background="?attr/selectableItemBackgroundBorderless" />
 
         <TextView
@@ -239,12 +236,66 @@
                             android:textStyle="bold" />
                     </LinearLayout>
 
-                    <!-- Placeholder Calendar (Simplified for UI representation) -->
-                    <CalendarView
-                        android:id="@+id/calendarView"
+                    <!-- Custom Calendar Header -->
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:theme="@style/Widget.CalendarView.Custom" />
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+                        <ImageView
+                            android:id="@+id/btnPrevMonth"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@android:drawable/ic_media_previous"
+                            android:padding="8dp"
+                            app:tint="@color/text_primary"
+                            android:background="?attr/selectableItemBackgroundBorderless" />
+                        
+                        <TextView
+                            android:id="@+id/tvCalendarMonth"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Tháng 05, 2026"
+                            android:textColor="@color/text_primary"
+                            android:textSize="16sp"
+                            android:fontFamily="sans-serif-medium"
+                            android:textStyle="bold" />
+                            
+                        <ImageView
+                            android:id="@+id/btnNextMonth"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@android:drawable/ic_media_next"
+                            android:padding="8dp"
+                            app:tint="@color/text_primary"
+                            android:background="?attr/selectableItemBackgroundBorderless" />
+                    </LinearLayout>
+                    
+                    <!-- Days of Week Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="7"
+                        android:layout_marginBottom="8dp">
+                        <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="CN" android:gravity="center" android:textColor="@color/text_secondary" android:textSize="12sp" />
+                        <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="T2" android:gravity="center" android:textColor="@color/text_secondary" android:textSize="12sp" />
+                        <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="T3" android:gravity="center" android:textColor="@color/text_secondary" android:textSize="12sp" />
+                        <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="T4" android:gravity="center" android:textColor="@color/text_secondary" android:textSize="12sp" />
+                        <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="T5" android:gravity="center" android:textColor="@color/text_secondary" android:textSize="12sp" />
+                        <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="T6" android:gravity="center" android:textColor="@color/text_secondary" android:textSize="12sp" />
+                        <TextView android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:text="T7" android:gravity="center" android:textColor="@color/text_secondary" android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <!-- Custom Calendar Grid -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvCalendar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:overScrollMode="never" />
                         
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -302,32 +353,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="220dp" />
 
-                    <!-- Fake Legend to match the image -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="16dp"
-                        android:weightSum="2">
-                        
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="● Ăn uống        35%" android:textColor="@color/text_secondary" android:textSize="12sp" android:layout_marginBottom="8dp"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="● Mua sắm      20%" android:textColor="@color/text_secondary" android:textSize="12sp"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="● Di chuyển     30%" android:textColor="@color/text_secondary" android:textSize="12sp" android:layout_marginBottom="8dp"/>
-                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="● Khác             15%" android:textColor="@color/text_secondary" android:textSize="12sp"/>
-                        </LinearLayout>
-                    </LinearLayout>
+                    <!-- Fake Legend Removed -->
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -392,5 +418,15 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        app:elevation="8dp"
+        app:itemIconTint="@color/bottom_nav_selector"
+        app:itemTextColor="@color/bottom_nav_selector"
+        app:menu="@menu/bottom_nav_menu" />
 
 </LinearLayout>

@@ -338,6 +338,9 @@ public class AddTransactionActivity extends AppCompatActivity {
     private void createNewCategory(String name, String type) {
         progressBar.setVisibility(View.VISIBLE);
         Category newCat = new Category(null, name, type);
+        User user = new User();
+        user.setUserId(session.getUserId());
+        newCat.setUser(user);
 
         RetrofitClient.getApiService().createCategory(newCat).enqueue(new Callback<Category>() {
             @Override

@@ -12,8 +12,8 @@ public class Category {
     @SerializedName("type")
     private String type; // "THU" or "CHI"
 
-    @SerializedName("userId")
-    private Long userId;
+    @SerializedName("user")
+    private User user;
 
     public Category() {}
 
@@ -32,8 +32,8 @@ public class Category {
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
 
-    public Long getUserId() { return userId; }
-    public void setUserId(Long userId) { this.userId = userId; }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 
     public boolean isExpense() { return "CHI".equals(type); }
     public boolean isIncome() { return "THU".equals(type); }

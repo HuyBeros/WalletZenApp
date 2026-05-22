@@ -201,6 +201,9 @@ public class AddBudgetActivity extends AppCompatActivity {
         btnSaveBudget.setEnabled(false);
         String targetType = isExpenseSelected ? "CHI" : "THU";
         Category newCat = new Category(null, name, targetType);
+        User user = new User();
+        user.setUserId(session.getUserId());
+        newCat.setUser(user);
 
         RetrofitClient.getApiService().createCategory(newCat).enqueue(new Callback<Category>() {
             @Override

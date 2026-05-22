@@ -262,7 +262,9 @@ public class CategoryManageActivity extends AppCompatActivity {
 
                 // Cập nhật tên (giữ nguyên type)
                 Category cat = new Category(existing.getCategoryId(), name, existing.getType());
-                cat.setUserId(session.getUserId());
+                User u = new User();
+                u.setUserId(session.getUserId());
+                cat.setUser(u);
                 callUpdateCategory(existing.getCategoryId(), cat);
 
                 // Nếu là CHI, lưu hạn mức luôn
@@ -363,7 +365,9 @@ public class CategoryManageActivity extends AppCompatActivity {
                 
                 dialog.dismiss();
                 Category newCategory = new Category(null, name, type);
-                newCategory.setUserId(session.getUserId());
+                User u = new User();
+                u.setUserId(session.getUserId());
+                newCategory.setUser(u);
                 callCreateCategory(newCategory, limit);
             });
         }
@@ -384,7 +388,7 @@ public class CategoryManageActivity extends AppCompatActivity {
         showLoading(true);
         // Log request body for debugging
         android.util.Log.d("CategoryDebug", "Creating category: name=" + cat.getCategoryName()
-                + ", type=" + cat.getType() + ", userId=" + cat.getUserId());
+                + ", type=" + cat.getType() + ", userId=" + (cat.getUser() != null ? cat.getUser().getUserId() : "null"));
         RetrofitClient.getApiService().createCategory(cat).enqueue(new Callback<Category>() {
             @Override
             public void onResponse(Call<Category> call, Response<Category> r) {

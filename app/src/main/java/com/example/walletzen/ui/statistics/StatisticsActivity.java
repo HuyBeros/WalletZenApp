@@ -1,22 +1,31 @@
 package com.example.walletzen.ui.statistics;
 
 import android.os.Bundle;
-import android.widget.CalendarView;
+import android.content.Intent;
 import android.app.AlertDialog;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.walletzen.R;
 import com.example.walletzen.data.SessionManager;
 import com.example.walletzen.network.RetrofitClient;
+import com.example.walletzen.ui.home.HomeActivity;
+import com.example.walletzen.ui.budget.BudgetActivity;
+import com.example.walletzen.ui.profile.ProfileActivity;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.*;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -30,7 +39,16 @@ public class StatisticsActivity extends AppCompatActivity {
     private BarChart barChart;
     private PieChart pieChart;
     private TextView tvIncomeMonth, tvExpenseMonth;
-    private CalendarView calendarView;
+    
+    // Calendar Custom
+    private RecyclerView rvCalendar;
+    private TextView tvCalendarMonth;
+    private ImageView btnPrevMonth, btnNextMonth;
+    private Calendar currentCalendar;
+    private List<CalendarDay> calendarDays;
+    private CalendarAdapter calendarAdapter;
+
+    private BottomNavigationView bottomNav;
     private SessionManager session;
     private List<com.example.walletzen.model.Transaction> allTransactions = new ArrayList<>();
 
@@ -45,43 +63,173 @@ public class StatisticsActivity extends AppCompatActivity {
         pieChart = findViewById(R.id.pieChart);
         tvIncomeMonth = findViewById(R.id.tvIncomeMonth);
         tvExpenseMonth = findViewById(R.id.tvExpenseMonth);
-        calendarView = findViewById(R.id.calendarView);
+        bottomNav = findViewById(R.id.bottomNavigation);
+        
+        rvCalendar = findViewById(R.id.rvCalendar);
+        tvCalendarMonth = findViewById(R.id.tvCalendarMonth);
+        btnPrevMonth = findViewById(R.id.btnPrevMonth);
+        btnNextMonth = findViewById(R.id.btnNextMonth);
 
-        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
+        setupBottomNav();
 
-        if (calendarView != null) {
-            calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
-                String selectedDateStr = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month + 1, dayOfMonth);
-                double dayIncome = 0;
-                double dayExpense = 0;
-                int count = 0;
-                for (com.example.walletzen.model.Transaction t : allTransactions) {
-                    String tDate = t.getDate();
-                    if (tDate != null && tDate.startsWith(selectedDateStr)) {
-                        double amt = t.getAmount() != null ? Math.abs(t.getAmount()) : 0;
-                        if ("THU".equals(t.getType())) {
-                            dayIncome += amt;
-                        } else if ("CHI".equals(t.getType())) {
-                            dayExpense += amt;
-                        }
-                        count++;
-                    }
-                }
-                
-                String displayDate = String.format(Locale.getDefault(), "%02d/%02d/%04d", dayOfMonth, month + 1, year);
-                new AlertDialog.Builder(StatisticsActivity.this)
-                        .setTitle("Giao dịch ngày " + displayDate)
-                        .setMessage(String.format(Locale.getDefault(),
-                                "Tổng số giao dịch: %d\n\n🟢 Thu nhập: +%s\n🔴 Chi tiêu: -%s",
-                                count, formatMoney(dayIncome), formatMoney(dayExpense)))
-                        .setPositiveButton("Đóng", null)
-                        .show();
-            });
-        }
+        // Calendar init
+        currentCalendar = Calendar.getInstance();
+        calendarDays = new ArrayList<>();
+        rvCalendar.setLayoutManager(new GridLayoutManager(this, 7));
+        calendarAdapter = new CalendarAdapter(calendarDays, this::showDayDialog);
+        rvCalendar.setAdapter(calendarAdapter);
+
+        btnPrevMonth.setOnClickListener(v -> {
+            currentCalendar.add(Calendar.MONTH, -1);
+            updateCalendarUI();
+            
+            // Cập nhật thống kê khi chuyển tháng trên lịch
+            updateMonthStatsUI();
+        });
+
+        btnNextMonth.setOnClickListener(v -> {
+            currentCalendar.add(Calendar.MONTH, 1);
+            updateCalendarUI();
+            
+            // Cập nhật thống kê khi chuyển tháng trên lịch
+            updateMonthStatsUI();
+        });
 
         loadMonthStats();
         loadSpendingByCategory();
         loadTrend();
+        updateCalendarUI();
+    }
+
+    private void setupBottomNav() {
+        bottomNav.setSelectedItemId(R.id.nav_statistics);
+        bottomNav.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_home) {
+                startActivity(new Intent(this, HomeActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            } else if (id == R.id.nav_statistics) {
+                return true;
+            } else if (id == R.id.nav_profile) {
+                startActivity(new Intent(this, ProfileActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            } else if (id == R.id.nav_budget) {
+                startActivity(new Intent(this, BudgetActivity.class));
+                overridePendingTransition(0, 0);
+                finish();
+                return true;
+            }
+            return false;
+        });
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bottomNav.setSelectedItemId(R.id.nav_statistics);
+    }
+
+    private void updateCalendarUI() {
+        SimpleDateFormat sdf = new SimpleDateFormat("Tháng MM, yyyy", new Locale("vi", "VN"));
+        tvCalendarMonth.setText(sdf.format(currentCalendar.getTime()));
+        
+        buildCalendarDays();
+        populateCalendarData();
+    }
+
+    private void buildCalendarDays() {
+        calendarDays.clear();
+        
+        Calendar cal = (Calendar) currentCalendar.clone();
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        
+        int firstDayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 1; // 0=Sun, 1=Mon...
+        
+        cal.add(Calendar.DAY_OF_MONTH, -firstDayOfWeek); // Rewind to start of grid
+        
+        int currentMonth = currentCalendar.get(Calendar.MONTH);
+        
+        for (int i = 0; i < 42; i++) {
+            boolean isCurrentMonth = (cal.get(Calendar.MONTH) == currentMonth);
+            CalendarDay day = new CalendarDay(
+                cal.get(Calendar.DAY_OF_MONTH),
+                cal.get(Calendar.MONTH),
+                cal.get(Calendar.YEAR),
+                isCurrentMonth
+            );
+            calendarDays.add(day);
+            cal.add(Calendar.DAY_OF_MONTH, 1);
+        }
+        
+        calendarAdapter.notifyDataSetChanged();
+    }
+    
+    private void populateCalendarData() {
+        if (allTransactions.isEmpty() || calendarDays.isEmpty()) return;
+        
+        for (CalendarDay day : calendarDays) {
+            day.setIncome(0);
+            day.setExpense(0);
+            day.setTransactionCount(0);
+        }
+        
+        for (com.example.walletzen.model.Transaction t : allTransactions) {
+            String tDate = t.getDate(); // yyyy-MM-dd
+            if (tDate == null || tDate.length() < 10) continue;
+            
+            try {
+                int y = Integer.parseInt(tDate.substring(0, 4));
+                int m = Integer.parseInt(tDate.substring(5, 7)) - 1;
+                int d = Integer.parseInt(tDate.substring(8, 10));
+                
+                for (CalendarDay day : calendarDays) {
+                    if (day.getYear() == y && day.getMonth() == m && day.getDay() == d) {
+                        double amt = t.getAmount() != null ? Math.abs(t.getAmount()) : 0;
+                        if ("THU".equals(t.getType())) {
+                            day.setIncome(day.getIncome() + amt);
+                        } else if ("CHI".equals(t.getType())) {
+                            day.setExpense(day.getExpense() + amt);
+                        }
+                        day.setTransactionCount(day.getTransactionCount() + 1);
+                        break;
+                    }
+                }
+            } catch (Exception ignored) {}
+        }
+        
+        calendarAdapter.notifyDataSetChanged();
+    }
+    
+    private void showDayDialog(CalendarDay day) {
+        String displayDate = String.format(Locale.getDefault(), "%02d/%02d/%04d", day.getDay(), day.getMonth() + 1, day.getYear());
+        new AlertDialog.Builder(StatisticsActivity.this)
+                .setTitle("Giao dịch ngày " + displayDate)
+                .setMessage(String.format(Locale.getDefault(),
+                        "Tổng số giao dịch: %d\n\n🟢 Thu nhập: +%s\n🔴 Chi tiêu: -%s",
+                        day.getTransactionCount(), formatMoney(day.getIncome()), formatMoney(day.getExpense())))
+                .setPositiveButton("Đóng", null)
+                .show();
+    }
+
+    private void updateMonthStatsUI() {
+        String currentMonthStr = new java.text.SimpleDateFormat("yyyy-MM",
+                java.util.Locale.getDefault()).format(currentCalendar.getTime());
+        
+        double income = 0, expense = 0;
+        for (com.example.walletzen.model.Transaction t : allTransactions) {
+            String date = t.getDate();
+            if (date != null && date.startsWith(currentMonthStr)) {
+                double amt = t.getAmount() != null ? Math.abs(t.getAmount()) : 0;
+                if ("THU".equals(t.getType()))      income  += amt;
+                else if ("CHI".equals(t.getType())) expense += amt;
+            }
+        }
+        tvIncomeMonth.setText("+" + formatMoney(income));
+        tvExpenseMonth.setText("-" + formatMoney(expense));
     }
 
     private void loadMonthStats() {
@@ -94,27 +242,15 @@ public class StatisticsActivity extends AppCompatActivity {
                         if (response.isSuccessful() && response.body() != null) {
                             allTransactions.clear();
                             allTransactions.addAll(response.body());
-                            String currentMonth = new java.text.SimpleDateFormat("yyyy-MM",
-                                    java.util.Locale.getDefault()).format(new java.util.Date());
-                            double income = 0, expense = 0;
-                            for (com.example.walletzen.model.Transaction t : response.body()) {
-                                String date = t.getDate();
-                                if (date != null && date.startsWith(currentMonth)) {
-                                    double amt = t.getAmount() != null ? Math.abs(t.getAmount()) : 0;
-                                    if ("THU".equals(t.getType()))      income  += amt;
-                                    else if ("CHI".equals(t.getType())) expense += amt;
-                                }
-                            }
-                            double balance = income - expense;
-                            tvIncomeMonth.setText("+" + formatMoney(income));
-                            tvExpenseMonth.setText("-" + formatMoney(expense));
+                            
+                            populateCalendarData(); // Update grid when data arrives
+                            updateMonthStatsUI(); // Update UI
                         }
                     }
                     @Override
                     public void onFailure(Call<List<com.example.walletzen.model.Transaction>> call, Throwable t) {}
                 });
     }
-
 
     private void loadSpendingByCategory() {
         RetrofitClient.getApiService()
@@ -156,23 +292,41 @@ public class StatisticsActivity extends AppCompatActivity {
                 entries.add(new PieEntry(e.getValue().floatValue(), e.getKey()));
             }
         }
-        PieDataSet dataSet = new PieDataSet(entries, "Chi tiêu theo danh mục");
+        PieDataSet dataSet = new PieDataSet(entries, ""); // Blank label for legend so it doesn't duplicate
         dataSet.setColors(new int[]{
                 0xFFFF4081, 0xFF7C4DFF, 0xFF00BCD4, 0xFFFF9800, 0xFF4CAF50,
                 0xFF9C27B0, 0xFF2196F3, 0xFFFF5722
         });
-        dataSet.setValueTextSize(11f);
+        dataSet.setValueTextSize(12f);
+        dataSet.setValueTextColor(android.graphics.Color.WHITE);
         dataSet.setSliceSpace(3f);
+        
+        // Use Percent Formatter
+        pieChart.setUsePercentValues(true);
+        dataSet.setValueFormatter(new PercentFormatter(pieChart));
 
         PieData pieData = new PieData(dataSet);
         pieChart.setData(pieData);
-        pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
         pieChart.setHoleRadius(55f);
         pieChart.setTransparentCircleRadius(60f);
         pieChart.setHoleColor(getResources().getColor(R.color.background, null));
         pieChart.setCenterText("Chi tiêu");
         pieChart.setCenterTextSize(16f);
+        
+        // Custom Legend
+        Legend legend = pieChart.getLegend();
+        legend.setEnabled(true);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        legend.setWordWrapEnabled(true);
+        legend.setDrawInside(false);
+        legend.setTextColor(android.graphics.Color.parseColor("#4B5563")); // text_secondary
+        legend.setTextSize(12f);
+        legend.setXEntrySpace(15f);
+        legend.setYEntrySpace(5f);
+
         pieChart.animate();
         pieChart.invalidate();
     }
@@ -247,24 +401,6 @@ public class StatisticsActivity extends AppCompatActivity {
 
         barChart.animateY(800);
         barChart.invalidate();
-    }
-
-    private double getOrDefault(Map<String, Double> m, String k, double d) {
-        Double v = m.get(k); return v != null ? v : d;
-    }
-
-    /** Try multiple key names, return first non-zero value found */
-    private double getFirstNonZero(Map<String, Double> m, String... keys) {
-        for (String k : keys) {
-            Double v = m.get(k);
-            if (v != null && v != 0) return v;
-        }
-        // Return first non-null even if 0
-        for (String k : keys) {
-            Double v = m.get(k);
-            if (v != null) return v;
-        }
-        return 0.0;
     }
 
     private double getDouble(Map<String, Object> m, String key) {
