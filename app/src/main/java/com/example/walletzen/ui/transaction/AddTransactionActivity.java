@@ -127,7 +127,7 @@ public class AddTransactionActivity extends AppCompatActivity {
 
 
     private void loadCategories(String type) {
-        RetrofitClient.getApiService().getCategoriesByType(type).enqueue(new Callback<List<Category>>() {
+        RetrofitClient.getApiService().getCategoriesByType(session.getUserId(), type).enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -187,6 +187,10 @@ public class AddTransactionActivity extends AppCompatActivity {
         double amount;
         try {
             amount = Double.parseDouble(amountStr);
+            if (amount <= 0) {
+                edtAmount.setError("Số tiền phải lớn hơn 0");
+                return;
+            }
         } catch (NumberFormatException e) {
             edtAmount.setError("Số tiền không hợp lệ");
             return;
@@ -369,7 +373,7 @@ public class AddTransactionActivity extends AppCompatActivity {
     }
 
     private void loadAndSelectCategory(String type, Long preSelectId) {
-        RetrofitClient.getApiService().getCategoriesByType(type).enqueue(new Callback<List<Category>>() {
+        RetrofitClient.getApiService().getCategoriesByType(session.getUserId(), type).enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
                 if (response.isSuccessful() && response.body() != null) {

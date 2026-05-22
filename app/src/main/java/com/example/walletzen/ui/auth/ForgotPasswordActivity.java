@@ -36,8 +36,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
 
     private void sendReset() {
         String email = edtEmail.getText().toString().trim();
-        if (TextUtils.isEmpty(email)) {
-            edtEmail.setError("Nhập email");
+        if (TextUtils.isEmpty(email) || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            edtEmail.setError("Email không đúng định dạng");
             return;
         }
 

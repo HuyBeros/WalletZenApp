@@ -71,15 +71,16 @@ public class LoginActivity extends AppCompatActivity {
 
         // Cấu hình Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                // Thay thế chuỗi này bằng Web Client ID thật trên Google Cloud Console
-                .requestIdToken("YOUR_WEB_CLIENT_ID.apps.googleusercontent.com")
+                .requestIdToken("923508787768-tirtvocpu20jrba6khna61ppbqjv3idj.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         btnGoogleLogin.setOnClickListener(v -> {
             setLoading(true);
-            googleSignInLauncher.launch(mGoogleSignInClient.getSignInIntent());
+            mGoogleSignInClient.signOut().addOnCompleteListener(this, task -> {
+                googleSignInLauncher.launch(mGoogleSignInClient.getSignInIntent());
+            });
         });
 
         txtRegister.setOnClickListener(v ->

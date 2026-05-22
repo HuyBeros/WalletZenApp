@@ -65,6 +65,10 @@ public class RegisterActivity extends AppCompatActivity {
             edtPassword.setError("Mật khẩu ít nhất 6 ký tự");
             return;
         }
+        if (TextUtils.isEmpty(email) || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            edtEmail.setError("Email không đúng định dạng");
+            return;
+        }
 
         setLoading(true);
 

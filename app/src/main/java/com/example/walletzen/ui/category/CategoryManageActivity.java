@@ -113,7 +113,7 @@ public class CategoryManageActivity extends AppCompatActivity {
         budgetIdMap.clear();
 
         // Load categories by type, then load budget+transaction data if CHI
-        RetrofitClient.getApiService().getCategoriesByType(currentTab)
+        RetrofitClient.getApiService().getCategoriesByType(session.getUserId(), currentTab)
                 .enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {

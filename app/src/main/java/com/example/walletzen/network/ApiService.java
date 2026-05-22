@@ -81,12 +81,12 @@ public interface ApiService {
 
     // ============ CATEGORIES ============
 
-    // GET /api/categories?type=CHI  (type optional)
+    // GET /api/categories?userId=1&type=CHI  (type optional)
     @GET("api/categories")
-    Call<List<Category>> getCategories();
+    Call<List<Category>> getCategories(@Query("userId") Long userId);
 
     @GET("api/categories")
-    Call<List<Category>> getCategoriesByType(@Query("type") String type);
+    Call<List<Category>> getCategoriesByType(@Query("userId") Long userId, @Query("type") String type);
 
     @POST("api/categories")
     Call<Category> createCategory(@Body Category category);

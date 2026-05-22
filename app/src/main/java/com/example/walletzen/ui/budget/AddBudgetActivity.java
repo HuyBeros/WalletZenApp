@@ -107,7 +107,7 @@ public class AddBudgetActivity extends AppCompatActivity {
     }
 
     private void loadCategories() {
-        RetrofitClient.getApiService().getCategories().enqueue(new Callback<List<Category>>() {
+        RetrofitClient.getApiService().getCategories(session.getUserId()).enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
                 if (response.isSuccessful() && response.body() != null) {
